@@ -2,23 +2,27 @@ package Interpreteur;
 
 import Interpreteur.Interfaces.IExpression;
 
-public class Adition extends ComposantExpression implements IExpression {
+public class Adition extends ComposantExpression {
     
-    public Adition(Double valeur)
+    public Adition(double valeur)
     {
         super(valeur);
     }
 
     @Override
-    public Double Resoudre(Double equation) {
-        if (this.getValeur() != null) {
-            return this.getValeur();
-        }
-
+    public Double Resoudre() {
         if (this.getGauche() == null || this.getDroite() == null) {
+            if (this.getValeur() != null) {
+                return this.getValeur();
+            }
             throw new IllegalStateException("Noeuds gauche/droite non initialisés pour l'addition, donc c'est une équation invalide");
         }
 
-        return this.getGauche().Resoudre(equation) + this.getDroite().Resoudre(equation);
+        return this.getGauche().Resoudre() + this.getDroite().Resoudre();
+    }
+
+    @Override
+    public void ajouterExpression(IExpression droite, IExpression gauche) {
+        super.ajouterExpression(droite, gauche);
     }
 }

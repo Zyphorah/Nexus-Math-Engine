@@ -1,11 +1,13 @@
+import Interpreteur.Adition;
+import Interpreteur.Interfaces.IExpression;
 
 public class Main {
     public static void main(String[] args) {
 
-        System.out.printf("Hello and welcome!");
+        IExpression expression = new Adition(0);
 
-        for (int i = 1; i <= 5; i++) {
-            System.out.println("i = " + i);
-        }
+        expression.ajouterExpression(new Adition(4), new Adition(2));
+
+        System.out.println(expression.Resoudre());
     }
 }

@@ -1,8 +1,7 @@
 package Interpreteur;
 
-import Interpreteur.Interfaces.IExpression;
 
-public class Division extends ComposantExpression implements IExpression
+public class Division extends ComposantExpression
 {
 
     public Division(Double valeur) {
@@ -10,8 +9,19 @@ public class Division extends ComposantExpression implements IExpression
     }
 
     @Override
-    public Double Resoudre(Double equation) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'Resoudre'");
+    public Double Resoudre() {
+        if (this.getGauche() == null || this.getDroite() == null) {
+            if (this.getValeur() != null) {
+                return this.getValeur();
+            }
+            throw new IllegalStateException("Noeuds gauche/droite non initialisés pour la division, donc c'est une équation invalide");
+        }
+
+        Double denom = this.getDroite().Resoudre();
+        if (denom == 0) {
+            throw new ArithmeticException("Division par zéro détectée");
+        }
+
+        return this.getGauche().Resoudre() / denom;
     }
 }
