@@ -1,7 +1,16 @@
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+
 import Interpreteur.Adition;
+import Interpreteur.Division;
 import Interpreteur.Multiplication;
 import Interpreteur.Soustraction;
 import Interpreteur.Interfaces.IExpression;
+import Interpreteur.Manufacture.Registre.RegistreSymbole;
+import Interpreteur.Manufacture.Registre.Interfaces.IRegisteSymbole;
+import Interpreteur.Manufacture.Interfaces.INoeudFactory;
 
 // Priorité des opérations
 /*
@@ -15,6 +24,21 @@ import Interpreteur.Interfaces.IExpression;
 public class Main {
     public static void main(String[] args) {
 
+        String equation = "((4 + 2) + 2) + 4";
+        List<Character> filtreIgnoreCaractere = Arrays.asList(' ');
+        
+        IRegisteSymbole registeSymbole = new RegistreSymbole();
+        Map<Character,INoeudFactory> symboleMap = registeSymbole.creerSymbole();
+
+
+        symboleMap.get('+').creerNoeud();
+
+        
+
+
+
+      
+
         // Construction d'un arbre pour 4 + 2 + 2 + 4 = 12
         // Arbre: ((4 + 2) + 2) + 4
         
@@ -24,6 +48,7 @@ public class Main {
         IExpression quatre2 = new Adition(4);
         IExpression deux3 = new Soustraction(2.0);
         IExpression deux4 = new Multiplication(2.0);
+        IExpression deux5 = new Division(2.0); 
         
         // Première addition: 4 + 2
         IExpression add1 = new Adition();
@@ -45,7 +70,12 @@ public class Main {
         // Multiplication 
         IExpression add5 = new Multiplication();
         add5.ajouterExpression(add4,deux4);
+
+        IExpression add6 = new Division(); 
+
+        add6.ajouterExpression(deux5, add5);
         
-        System.out.println(add5.Resoudre());
+        System.out.println(add6.Resoudre());
+
     }
 }
