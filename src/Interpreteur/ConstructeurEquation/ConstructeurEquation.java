@@ -2,7 +2,6 @@ package Interpreteur.ConstructeurEquation;
 
 import Interpreteur.Adition;
 import Interpreteur.AbstractNoeud;
-import Interpreteur.Interfaces.IExpression;
 
 public class ConstructeurEquation {
 

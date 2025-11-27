@@ -1,5 +1,9 @@
 import Interpreteur.Adition;
+import Interpreteur.Multiplication;
+import Interpreteur.Soustraction;
 import Interpreteur.Interfaces.IExpression;
+
+// Priorité des opérations
 /*
     Les Parenthèses
 
@@ -7,7 +11,6 @@ import Interpreteur.Interfaces.IExpression;
 
     Les Additions et les Soustractions (de la gauche vers la droite)
  */
-
 
 public class Main {
     public static void main(String[] args) {
@@ -19,6 +22,8 @@ public class Main {
         IExpression deux1 = new Adition(2);
         IExpression deux2 = new Adition(2);
         IExpression quatre2 = new Adition(4);
+        IExpression deux3 = new Soustraction(2.0);
+        IExpression deux4 = new Multiplication(2.0);
         
         // Première addition: 4 + 2
         IExpression add1 = new Adition();
@@ -31,7 +36,16 @@ public class Main {
         // Troisième addition ((4 + 2) + 2) + 4
         IExpression add3 = new Adition();
         add3.ajouterExpression(add2, quatre2);
+
+        // return le dernier noeud dans une fonction pour l'arbre complet de l'équation
+
+        IExpression add4 = new Soustraction();
+        add4.ajouterExpression(deux3, add3);
+
+        // Multiplication 
+        IExpression add5 = new Multiplication();
+        add5.ajouterExpression(add4,deux4);
         
-        System.out.println(add3.Resoudre());
+        System.out.println(add5.Resoudre());
     }
 }
