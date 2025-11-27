@@ -1,28 +1,25 @@
 package Interpreteur;
 
-import Interpreteur.Interfaces.IExpression;
-
-public class Adition extends ComposantExpression {
+public class Adition extends AbstractNoeud {
     
+    private final Double _valeur;
+
     public Adition(double valeur)
     {
-        super(valeur);
+        this._valeur = valeur;
+    }
+
+    public Adition()
+    {
+        this._valeur = null;
     }
 
     @Override
     public Double Resoudre() {
-        if (this.getGauche() == null || this.getDroite() == null) {
-            if (this.getValeur() != null) {
-                return this.getValeur();
-            }
-            throw new IllegalStateException("Noeuds gauche/droite non initialisés pour l'addition, donc c'est une équation invalide");
+
+        if (this.getGauche() != null && this.getDroite() != null) {
+            return this.getGauche().Resoudre() + this.getDroite().Resoudre();
         }
-
-        return this.getGauche().Resoudre() + this.getDroite().Resoudre();
-    }
-
-    @Override
-    public void ajouterExpression(IExpression droite, IExpression gauche) {
-        super.ajouterExpression(droite, gauche);
+        return this._valeur;
     }
 }

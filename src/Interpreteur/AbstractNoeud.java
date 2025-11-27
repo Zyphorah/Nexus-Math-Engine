@@ -2,16 +2,12 @@ package Interpreteur;
 
 import Interpreteur.Interfaces.IExpression;
 
-public abstract class ComposantExpression implements IExpression {
+public abstract class AbstractNoeud implements IExpression
+{
     
     private IExpression _droite; 
     private IExpression _gauche;
-    private Double _valeur;
 
-    public ComposantExpression(Double valeur)
-    {
-        this._valeur = valeur; 
-    }
 
     public void ajouterExpression(IExpression droite, IExpression gauche)
     {
@@ -35,7 +31,4 @@ public abstract class ComposantExpression implements IExpression {
         return this._gauche;
     }
 
-    public Double getValeur() {
-        return this._valeur;
-    }
 }

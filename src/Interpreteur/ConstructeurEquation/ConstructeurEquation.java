@@ -1,14 +1,14 @@
 package Interpreteur.ConstructeurEquation;
 
 import Interpreteur.Adition;
-import Interpreteur.ComposantExpression;
+import Interpreteur.AbstractNoeud;
 import Interpreteur.Interfaces.IExpression;
 
 public class ConstructeurEquation {
 
-    ComposantExpression _expression; 
+    AbstractNoeud _expression; 
 
-    public ConstructeurEquation(ComposantExpression expression)
+    public ConstructeurEquation(AbstractNoeud expression)
     {
         this._expression = expression;
     }

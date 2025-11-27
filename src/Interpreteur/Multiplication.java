@@ -1,21 +1,24 @@
 package Interpreteur;
 
-public class Multiplication extends ComposantExpression
+public class Multiplication extends AbstractNoeud
 {
+    private final Double _valeur;
 
     public Multiplication(Double valeur) {
-        super(valeur);
+        this._valeur = valeur;
+    }
+
+    public Multiplication()
+    {
+        this._valeur = null;
     }
 
     @Override
     public Double Resoudre() {
-        if (this.getGauche() == null || this.getDroite() == null) {
-            if (this.getValeur() != null) {
-                return this.getValeur();
-            }
-            throw new IllegalStateException("Noeuds gauche/droite non initialisés pour la multiplication, donc c'est une équation invalide");
+        if (this.getGauche() != null && this.getDroite() != null) {
+            return this.getGauche().Resoudre() * this.getDroite().Resoudre();
         }
-
-        return this.getGauche().Resoudre() * this.getDroite().Resoudre();
+        
+        return this._valeur;
     }
 }
