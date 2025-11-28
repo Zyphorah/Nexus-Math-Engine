@@ -40,7 +40,7 @@ public class Main {
         List<Double> nombres = new ArrayList<>();
         expressionParse.parserEquation(equationSimple, nombres, operateurs);
         
-        // Initialiser la liste de nœuds avec les nombres
+        // Initialiser la liste de noeuds avec les nombres
         for (double nombre : nombres) {
             noeudsList.add(new Adition(nombre));
         }
