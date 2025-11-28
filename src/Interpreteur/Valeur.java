@@ -1,7 +1,9 @@
 package Interpreteur;
 
-public class Valeur extends AbstractNoeud {
-    
+import Interpreteur.Interfaces.IExpression;
+
+public class Valeur implements IExpression {
+
     private final Double _valeur; 
 
     public Valeur(Double valeur)

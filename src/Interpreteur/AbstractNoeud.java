@@ -1,13 +1,12 @@
 package Interpreteur;
 
+import Interpreteur.Interfaces.IEquation;
 import Interpreteur.Interfaces.IExpression;
 
-public abstract class AbstractNoeud implements IExpression
+public abstract class AbstractNoeud implements IEquation
 {
-    
     private IExpression _droite; 
     private IExpression _gauche;
-
 
     public void ajouterExpression(IExpression gauche, IExpression droite)
     {

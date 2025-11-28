@@ -2,12 +2,12 @@ package Interpreteur.Manufacture;
 
 
 import Interpreteur.Multiplication;
-import Interpreteur.Interfaces.IExpression;
+import Interpreteur.Interfaces.IEquation;
 import Interpreteur.Manufacture.Interfaces.INoeudFactory;
 
 public class MultiplicationFactory implements INoeudFactory {
     @Override
-    public IExpression creerNoeud() {
+    public IEquation creerNoeud() {
         return new Multiplication();
     }
 }

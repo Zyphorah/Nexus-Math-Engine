@@ -1,9 +1,9 @@
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
 import Interpreteur.Valeur;
+import Interpreteur.Interfaces.IEquation;
 import Interpreteur.Interfaces.IExpression;
 import Interpreteur.Manufacture.Registre.RegistreSymbole;
 import Interpreteur.Manufacture.Registre.Interfaces.IRegisteSymbole;
@@ -25,9 +25,7 @@ import Utils.Parse.Expression.Interfaces.IExpressionParse;
 public class Main {
     public static void main(String[] args) {
 
-        String equation = "((4 + 2) + 2) + 4";
         String equationSimple = "53-2+2/2";
-        List<Character> filtreIgnoreCaractere = Arrays.asList(' ');
 
         IRegisteSymbole registeSymbole = new RegistreSymbole();
         List<Map<Character,INoeudFactory>> symboleMap = registeSymbole.creerSymbole();
@@ -60,10 +58,10 @@ public class Main {
                     IExpression gauche = noeudsList.get(i);
                     IExpression droite = noeudsList.get(i + 1);
                     
-                    IExpression noeud = opsNiveau.get(op).creerNoeud();
+                    IEquation noeud = opsNiveau.get(op).creerNoeud();
                     noeud.ajouterExpression(gauche, droite);
                     
-                    // Remplacer dans la liste par le nouveau nœud
+                    // Remplacer dans la liste par le nouveau noeud
                     noeudsList.set(i, noeud);
                     noeudsList.remove(i + 1);
                     operateurs.remove(i);

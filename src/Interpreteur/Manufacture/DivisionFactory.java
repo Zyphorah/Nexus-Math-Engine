@@ -1,12 +1,12 @@
 package Interpreteur.Manufacture;
 
 import Interpreteur.Division;
-import Interpreteur.Interfaces.IExpression;
+import Interpreteur.Interfaces.IEquation;
 import Interpreteur.Manufacture.Interfaces.INoeudFactory;
 
 public class DivisionFactory implements INoeudFactory {
     @Override
-    public IExpression creerNoeud() {
+    public IEquation creerNoeud() {
         return new Division();
     }
 }

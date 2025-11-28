@@ -1,12 +1,12 @@
 package Interpreteur.Manufacture;
 
 import Interpreteur.Adition;
-import Interpreteur.Interfaces.IExpression;
+import Interpreteur.Interfaces.IEquation;
 import Interpreteur.Manufacture.Interfaces.INoeudFactory;
 
 public class AditionFactory implements INoeudFactory {
 
-    public IExpression creerNoeud() {
+    public IEquation creerNoeud() {
         return new Adition();
     }
 }
