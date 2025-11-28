@@ -1,12 +1,12 @@
-import java.util.List;
 import java.util.Map;
 
 import Interpreteur.Valeur;
+import Interpreteur.Factory.Interfaces.INoeudFactory;
+import Interpreteur.Factory.Registre.RegistreSymbole;
+import Interpreteur.Factory.Registre.Interfaces.IRegisteSymbole;
 import Interpreteur.Interfaces.IArbre;
 import Interpreteur.Interfaces.IExpression;
-import Interpreteur.Manufacture.Registre.RegistreSymbole;
-import Interpreteur.Manufacture.Registre.Interfaces.IRegisteSymbole;
-import Interpreteur.Manufacture.Interfaces.INoeudFactory;
+import Parsing.ChaineOperateurs;
 
 // Faire le système de parser pour l'opération des parentèses
 
@@ -22,28 +22,11 @@ import Interpreteur.Manufacture.Interfaces.INoeudFactory;
 public class Main {
     private static IRegisteSymbole registeSymbole = new RegistreSymbole();
     private static Map<Character,INoeudFactory> symboleMap = registeSymbole.creerSymbole();
+    private static ChaineOperateurs chaineOperateurs = new ChaineOperateurs();
 
-   private static IExpression interpreter(String equationSimple) {
+   private static IExpression interpreter(String equationSimple,int niveau) {
 
-        int index = -1;
-        
-        if (equationSimple.indexOf('+') !=  -1)
-        {
-            index = equationSimple.indexOf('+');
-        }
-        else if (equationSimple.indexOf('-') != -1)
-        {
-            index = equationSimple.indexOf('-');
-        }
-        else if (equationSimple.indexOf('*') != -1)
-        {
-            index = equationSimple.indexOf('*');
-        }
-        else if (equationSimple.indexOf('/') != -1) 
-        {
-            index = equationSimple.indexOf('/');
-        }
-        
+        int index = chaineOperateurs.trouverOperateur(equationSimple);
         
         // Si pas d'opérateur trouvé, parser avec une valeur simple
         if (index == -1) {
@@ -54,8 +37,8 @@ public class Main {
         String partieGauche = equationSimple.substring(0, index).trim();
         String partieDroite = equationSimple.substring(index + 1).trim();
         
-        IExpression noeudGauche = interpreter(partieGauche);
-        IExpression noeudDroit = interpreter(partieDroite);
+        IExpression noeudGauche = interpreter(partieGauche,niveau);
+        IExpression noeudDroit = interpreter(partieDroite,niveau);
 
         IArbre noeud = symboleMap.get(equationSimple.charAt(index)).creerNoeud();
         
@@ -65,8 +48,8 @@ public class Main {
     }
     public static void main(String[] args) {
 
-        String equationSimple = "53+2+2*4";
-        IExpression noeudFinal = interpreter(equationSimple);
+        String equationSimple = "2*53+2*4+2";
+        IExpression noeudFinal = interpreter(equationSimple,0);
         System.out.println("Résultat: " + noeudFinal.Resoudre());
     }
 }

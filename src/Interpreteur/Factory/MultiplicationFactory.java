@@ -1,9 +1,9 @@
-package Interpreteur.Manufacture;
+package Interpreteur.Factory;
 
 
 import Interpreteur.Multiplication;
+import Interpreteur.Factory.Interfaces.INoeudFactory;
 import Interpreteur.Interfaces.IArbre;
-import Interpreteur.Manufacture.Interfaces.INoeudFactory;
 
 public class MultiplicationFactory implements INoeudFactory {
     @Override

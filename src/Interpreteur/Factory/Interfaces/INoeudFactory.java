@@ -1,4 +1,4 @@
-package Interpreteur.Manufacture.Interfaces;
+package Interpreteur.Factory.Interfaces;
 
 import Interpreteur.Interfaces.IArbre;
 

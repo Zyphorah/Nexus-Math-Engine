@@ -1,8 +1,8 @@
-package Interpreteur.Manufacture;
+package Interpreteur.Factory;
 
 import Interpreteur.Adition;
+import Interpreteur.Factory.Interfaces.INoeudFactory;
 import Interpreteur.Interfaces.IArbre;
-import Interpreteur.Manufacture.Interfaces.INoeudFactory;
 
 public class AditionFactory implements INoeudFactory {
 
