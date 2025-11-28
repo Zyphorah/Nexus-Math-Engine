@@ -1,6 +1,6 @@
 package Interpreteur;
 
-public class Adition extends AbstractNoeud {
+public class Addition extends AbstractNoeud {
     
     @Override
     public Double Resoudre() {
