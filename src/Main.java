@@ -23,8 +23,6 @@ import Utils.Parse.Expression.Interfaces.IExpressionParse;
  */
 
 public class Main {
-    
-    
     public static void main(String[] args) {
 
         String equation = "((4 + 2) + 2) + 4";
@@ -62,7 +60,6 @@ public class Main {
                     IExpression gauche = noeudsList.get(i);
                     IExpression droite = noeudsList.get(i + 1);
                     
-                    // Créer le nœud sans le résoudre
                     IExpression noeud = opsNiveau.get(op).creerNoeud();
                     noeud.ajouterExpression(gauche, droite);
                     
@@ -70,17 +67,14 @@ public class Main {
                     noeudsList.set(i, noeud);
                     noeudsList.remove(i + 1);
                     operateurs.remove(i);
-                    // Ne pas incrémenter i pour revérifier le même index
                 } else {
-                    i++; // Passer à l'opérateur suivant seulement s'il n'a pas été traité
+                    i++; 
                 }
             }
         }
         
-        // Le nœud final contient l'arbre complet
         noeudFinal = noeudsList.get(0);
         
         System.out.println("Résultat: " + noeudFinal.Resoudre());
-        
     }
 }
