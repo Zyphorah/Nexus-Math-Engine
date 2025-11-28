@@ -3,7 +3,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-import Interpreteur.Adition;
+import Interpreteur.Valeur;
 import Interpreteur.Interfaces.IExpression;
 import Interpreteur.Manufacture.Registre.RegistreSymbole;
 import Interpreteur.Manufacture.Registre.Interfaces.IRegisteSymbole;
@@ -42,7 +42,7 @@ public class Main {
         
         // Initialiser la liste de noeuds avec les nombres
         for (double nombre : nombres) {
-            noeudsList.add(new Adition(nombre));
+            noeudsList.add(new Valeur(nombre));
         }
         
         // Traiter les priorités du PLUS élevé au MOINS élevé

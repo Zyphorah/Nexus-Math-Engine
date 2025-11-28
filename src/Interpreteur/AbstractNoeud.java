@@ -30,5 +30,4 @@ public abstract class AbstractNoeud implements IExpression
     public IExpression getGauche() {
         return this._gauche;
     }
-
 }

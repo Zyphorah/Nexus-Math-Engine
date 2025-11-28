@@ -6,11 +6,6 @@ import Interpreteur.Manufacture.Interfaces.INoeudFactory;
 
 public class AditionFactory implements INoeudFactory {
 
-
-    public IExpression creerNoeud(Double valeur) {
-        return new Adition(valeur);
-    }
-
     public IExpression creerNoeud() {
         return new Adition();
     }
