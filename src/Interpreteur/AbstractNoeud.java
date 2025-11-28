@@ -1,9 +1,9 @@
 package Interpreteur;
 
-import Interpreteur.Interfaces.IEquation;
+import Interpreteur.Interfaces.IArbre;
 import Interpreteur.Interfaces.IExpression;
 
-public abstract class AbstractNoeud implements IEquation
+public abstract class AbstractNoeud implements IArbre
 {
     private IExpression _droite; 
     private IExpression _gauche;

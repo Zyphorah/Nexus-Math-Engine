@@ -3,7 +3,7 @@ import java.util.List;
 import java.util.Map;
 
 import Interpreteur.Valeur;
-import Interpreteur.Interfaces.IEquation;
+import Interpreteur.Interfaces.IArbre;
 import Interpreteur.Interfaces.IExpression;
 import Interpreteur.Manufacture.Registre.RegistreSymbole;
 import Interpreteur.Manufacture.Registre.Interfaces.IRegisteSymbole;
@@ -58,7 +58,7 @@ public class Main {
                     IExpression gauche = noeudsList.get(i);
                     IExpression droite = noeudsList.get(i + 1);
                     
-                    IEquation noeud = opsNiveau.get(op).creerNoeud();
+                    IArbre noeud = opsNiveau.get(op).creerNoeud();
                     noeud.ajouterExpression(gauche, droite);
                     
                     // Remplacer dans la liste par le nouveau noeud

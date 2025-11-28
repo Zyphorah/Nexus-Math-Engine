@@ -1,7 +1,7 @@
 package Interpreteur.Manufacture.Interfaces;
 
-import Interpreteur.Interfaces.IEquation;
+import Interpreteur.Interfaces.IArbre;
 
 public interface INoeudFactory {
-    IEquation creerNoeud();
+    IArbre creerNoeud();
 }
