@@ -3,11 +3,11 @@ package Interpreteur.ConstructeurEquation;
 import Interpreteur.Adition;
 import Interpreteur.AbstractNoeud;
 
-public class ConstructeurEquation {
+public class ConstructeurArbreEquation {
 
     AbstractNoeud _expression; 
 
-    public ConstructeurEquation(AbstractNoeud expression)
+    public ConstructeurArbreEquation(AbstractNoeud expression)
     {
         this._expression = expression;
     }

@@ -4,13 +4,14 @@ import java.util.List;
 import java.util.Map;
 
 import Interpreteur.Adition;
-import Interpreteur.Division;
-import Interpreteur.Multiplication;
-import Interpreteur.Soustraction;
 import Interpreteur.Interfaces.IExpression;
 import Interpreteur.Manufacture.Registre.RegistreSymbole;
 import Interpreteur.Manufacture.Registre.Interfaces.IRegisteSymbole;
+import Utils.Parse.Expression.ExpressionParse;
 import Interpreteur.Manufacture.Interfaces.INoeudFactory;
+import Utils.Parse.Expression.Interfaces.IExpressionParse;
+
+// Faire le système de parser pour l'opération des parentèses
 
 // Priorité des opérations
 /*
@@ -22,60 +23,64 @@ import Interpreteur.Manufacture.Interfaces.INoeudFactory;
  */
 
 public class Main {
+    
+    
     public static void main(String[] args) {
 
         String equation = "((4 + 2) + 2) + 4";
+        String equationSimple = "53-2+2/2";
         List<Character> filtreIgnoreCaractere = Arrays.asList(' ');
-        
+
         IRegisteSymbole registeSymbole = new RegistreSymbole();
-        Map<Character,INoeudFactory> symboleMap = registeSymbole.creerSymbole();
+        List<Map<Character,INoeudFactory>> symboleMap = registeSymbole.creerSymbole();
 
-
-        symboleMap.get('+').creerNoeud();
-
+        // Parser l'équation en nombres et opérateurs séparés
+        List<IExpression> noeudsList = new ArrayList<>();
+        List<Character> operateurs = new ArrayList<>();
         
-
-
-
-      
-
-        // Construction d'un arbre pour 4 + 2 + 2 + 4 = 12
-        // Arbre: ((4 + 2) + 2) + 4
+        IExpressionParse expressionParse  = new ExpressionParse();
+        List<Double> nombres = new ArrayList<>();
+        expressionParse.parserEquation(equationSimple, nombres, operateurs);
         
-        IExpression quatre = new Adition(4);
-        IExpression deux1 = new Adition(2);
-        IExpression deux2 = new Adition(2);
-        IExpression quatre2 = new Adition(4);
-        IExpression deux3 = new Soustraction(2.0);
-        IExpression deux4 = new Multiplication(2.0);
-        IExpression deux5 = new Division(2.0); 
+        // Initialiser la liste de nœuds avec les nombres
+        for (double nombre : nombres) {
+            noeudsList.add(new Adition(nombre));
+        }
         
-        // Première addition: 4 + 2
-        IExpression add1 = new Adition();
-        add1.ajouterExpression(quatre, deux1);
+        // Traiter les priorités du PLUS élevé au MOINS élevé
+        IExpression noeudFinal = null;
         
-        // Deuxième addition: (4 + 2) + 2
-        IExpression add2 = new Adition();
-        add2.ajouterExpression(add1, deux2);
-
-        // Troisième addition ((4 + 2) + 2) + 4
-        IExpression add3 = new Adition();
-        add3.ajouterExpression(add2, quatre2);
-
-        // return le dernier noeud dans une fonction pour l'arbre complet de l'équation
-
-        IExpression add4 = new Soustraction();
-        add4.ajouterExpression(deux3, add3);
-
-        // Multiplication 
-        IExpression add5 = new Multiplication();
-        add5.ajouterExpression(add4,deux4);
-
-        IExpression add6 = new Division(); 
-
-        add6.ajouterExpression(deux5, add5);
+        for (int niveau = symboleMap.size() - 1; niveau >= 0; niveau--) {
+            Map<Character, INoeudFactory> opsNiveau = symboleMap.get(niveau);
+            
+            // Parcourir les opérateurs de gauche à droite, en cherchant ceux du niveau actuel
+            int i = 0;
+            while (i < operateurs.size()) {
+                char op = operateurs.get(i);
+                
+                if (opsNiveau.containsKey(op)) {
+                    IExpression gauche = noeudsList.get(i);
+                    IExpression droite = noeudsList.get(i + 1);
+                    
+                    // Créer le nœud sans le résoudre
+                    IExpression noeud = opsNiveau.get(op).creerNoeud();
+                    noeud.ajouterExpression(gauche, droite);
+                    
+                    // Remplacer dans la liste par le nouveau nœud
+                    noeudsList.set(i, noeud);
+                    noeudsList.remove(i + 1);
+                    operateurs.remove(i);
+                    // Ne pas incrémenter i pour revérifier le même index
+                } else {
+                    i++; // Passer à l'opérateur suivant seulement s'il n'a pas été traité
+                }
+            }
+        }
         
-        System.out.println(add6.Resoudre());
-
+        // Le nœud final contient l'arbre complet
+        noeudFinal = noeudsList.get(0);
+        
+        System.out.println("Résultat: " + noeudFinal.Resoudre());
+        
     }
 }
