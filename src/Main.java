@@ -72,7 +72,6 @@ public class Main {
         }
         
         noeudFinal = noeudsList.get(0);
-        
         System.out.println("Résultat: " + noeudFinal.Resoudre());
     }
 }
