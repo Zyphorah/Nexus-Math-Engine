@@ -1,13 +1,21 @@
-package Parsing;
+package Parsing.ChaineResponsabilite;
 
-import Parsing.Interfaces.IOperateurHandler;
+import Parsing.ChaineResponsabilite.Interfaces.IOperateurHandler;
 
 public abstract class OperateurHandler implements IOperateurHandler {
     protected IOperateurHandler prochain;
+    protected final ParentheseService parentheseService = new ParentheseService();
+    
+    protected abstract char getOperateur();
     
     @Override
     public void setProchain(IOperateurHandler prochain) {
         this.prochain = prochain;
+    }
+    
+    @Override
+    public int trouverOperateur(String equation) {
+        return parentheseService.trouverDernierAuNiveauZero(equation, getOperateur());
     }
     
     @Override

@@ -1,6 +1,6 @@
-package Parsing;
+package Parsing.ChaineResponsabilite;
 
-import Parsing.Interfaces.IOperateurHandler;
+import Parsing.ChaineResponsabilite.Interfaces.IOperateurHandler;
 
 public class ChaineOperateurs {
     private IOperateurHandler debut;

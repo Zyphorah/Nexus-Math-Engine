@@ -1,6 +1,5 @@
 package Interpreteur.Factory.Registre.Interfaces;
 
-import java.util.List;
 import java.util.Map;
 
 import Interpreteur.Factory.Interfaces.INoeudFactory;

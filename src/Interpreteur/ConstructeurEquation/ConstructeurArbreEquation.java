@@ -2,28 +2,30 @@ package Interpreteur.ConstructeurEquation;
 
 import java.util.Map;
 
-import Interpreteur.AbstractNoeud;
 import Interpreteur.Valeur;
 import Interpreteur.Factory.Interfaces.INoeudFactory;
-import Interpreteur.Factory.Registre.RegistreSymbole;
-import Interpreteur.Factory.Registre.Interfaces.IRegisteSymbole;
 import Interpreteur.Interfaces.IArbre;
 import Interpreteur.Interfaces.IExpression;
-import Parsing.ChaineOperateurs;
+import Parsing.ChaineResponsabilite.ChaineOperateurs;
+import Parsing.ChaineResponsabilite.ParentheseService;
 
 public class ConstructeurArbreEquation {
 
     private final Map<Character,INoeudFactory> _symboleMaps;
     private final ChaineOperateurs _chaineOperateurs;
+    private final ParentheseService _parentheseService;
 
     public ConstructeurArbreEquation(ChaineOperateurs chaineOperateurs, Map<Character, INoeudFactory> symboleMaps)
     {
         this._chaineOperateurs = chaineOperateurs;
         this._symboleMaps = symboleMaps;
+        this._parentheseService = new ParentheseService();
     }
 
-    private IExpression construireEquationSimple(String equationSimple) {
+    public IExpression construire(String equationSimple) {
+        equationSimple = this._parentheseService.enleverParenthesesEnglobantes(equationSimple);
 
+        // Une chaine de responsabilité pour gérer l'ordre des priorité
         int index = this._chaineOperateurs.trouverOperateur(equationSimple);
         
         // Si pas d'opérateur trouvé, parser avec une valeur simple
@@ -35,18 +37,13 @@ public class ConstructeurArbreEquation {
         String partieGauche = equationSimple.substring(0, index).trim();
         String partieDroite = equationSimple.substring(index + 1).trim();
         
-        IExpression noeudGauche = construireEquationSimple(partieGauche);
-        IExpression noeudDroit = construireEquationSimple(partieDroite);
+        IExpression noeudGauche = construire(partieGauche);
+        IExpression noeudDroit = construire(partieDroite);
 
         IArbre noeud = this._symboleMaps.get(equationSimple.charAt(index)).creerNoeud();
         
         noeud.ajouterExpression(noeudGauche, noeudDroit);
         
         return noeud;
-    }
-
-    public IExpression construire(String equation)
-    {
-        return construireEquationSimple(equation);
     }
 }
