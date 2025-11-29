@@ -27,9 +27,9 @@ public class ConstructeurArbreEquation {
 
         // Une chaine de responsabilité pour gérer l'ordre des priorité
         int index = this._chaineOperateurs.trouverOperateur(equationSimple);
-        
-        // Si pas d'opérateur trouvé, parser avec une valeur simple
-        if (index == -1) {
+
+        // Si aucune opérateur trouvé, parser avec une valeur simple
+        if (index == -1|| equationSimple.charAt(0) == '-' || equationSimple.charAt(0) == '+') {
             Double valeur = Double.parseDouble(equationSimple.trim());
             return new Valeur(valeur);
         }

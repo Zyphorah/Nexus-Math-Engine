@@ -43,6 +43,13 @@ public class ParentheseService {
             profondeur = calculerProfondeurInverse(c, profondeur);
             if (c == operateur && profondeur == 0) 
             {
+                if(i != 0)
+                {
+                    if(operateur == equation.charAt(i-1))
+                    {
+                        return i-1;
+                    }
+                }
                 return i;
             }
         }
