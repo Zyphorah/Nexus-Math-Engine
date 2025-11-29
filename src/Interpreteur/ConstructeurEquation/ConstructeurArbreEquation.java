@@ -19,7 +19,7 @@ public class ConstructeurArbreEquation {
     {
         this._chaineOperateurs = chaineOperateurs;
         this._symboleMaps = symboleMaps;
-        this._parentheseService = new ParentheseService();
+        this._parentheseService = new ParentheseService(symboleMaps.keySet());
     }
 
     public IExpression construire(String equationSimple) {
@@ -29,7 +29,7 @@ public class ConstructeurArbreEquation {
         int index = this._chaineOperateurs.trouverOperateur(equationSimple);
 
         // Si aucune opérateur trouvé, parser avec une valeur simple
-        if (index == -1|| equationSimple.charAt(0) == '-' || equationSimple.charAt(0) == '+') {
+        if (index == -1) {
             Double valeur = Double.parseDouble(equationSimple.trim());
             return new Valeur(valeur);
         }

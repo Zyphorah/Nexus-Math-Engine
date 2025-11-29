@@ -1,16 +1,26 @@
 package Parsing.ChaineResponsabilite;
 
+import java.util.Set;
+
 import Parsing.ChaineResponsabilite.Interfaces.IOperateurHandler;
 
 public class ChaineOperateurs {
     private IOperateurHandler debut;
     
-    public ChaineOperateurs() {
+    public ChaineOperateurs(Set<Character> operateurs) {
+        ParentheseService parentheseService = new ParentheseService(operateurs);
+        
         // Construire la chaîne dans l'ordre de priorité
-        IOperateurHandler addition = new AdditionHandler();
-        IOperateurHandler soustraction = new SoustractionHandler();
-        IOperateurHandler multiplication = new MultiplicationHandler();
-        IOperateurHandler division = new DivisionHandler();
+        AdditionHandler addition = new AdditionHandler();
+        SoustractionHandler soustraction = new SoustractionHandler();
+        MultiplicationHandler multiplication = new MultiplicationHandler();
+        DivisionHandler division = new DivisionHandler();
+        
+        // Injecter le ParentheseService
+        addition.setParentheseService(parentheseService);
+        soustraction.setParentheseService(parentheseService);
+        multiplication.setParentheseService(parentheseService);
+        division.setParentheseService(parentheseService);
         
         // Chaîner les handlers
         addition.setProchain(soustraction);

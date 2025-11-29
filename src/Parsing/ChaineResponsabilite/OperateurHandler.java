@@ -4,9 +4,13 @@ import Parsing.ChaineResponsabilite.Interfaces.IOperateurHandler;
 
 public abstract class OperateurHandler implements IOperateurHandler {
     protected IOperateurHandler prochain;
-    protected final ParentheseService parentheseService = new ParentheseService();
+    protected ParentheseService parentheseService;
     
     protected abstract char getOperateur();
+
+    public void setParentheseService(ParentheseService parentheseService) {
+        this.parentheseService = parentheseService;
+    }
     
     @Override
     public void setProchain(IOperateurHandler prochain) {

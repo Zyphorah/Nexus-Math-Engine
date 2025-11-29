@@ -1,6 +1,14 @@
 package Parsing.ChaineResponsabilite;
 
+import java.util.Set;
+
 public class ParentheseService {
+    
+    private final Set<Character> operateurs;
+
+    public ParentheseService(Set<Character> operateurs) {
+        this.operateurs = operateurs;
+    }
      
      //Enlève les parenthèses qui englobent toute l'expression
      //Ex: "(1+2)" -> "1+2", mais "(1+2)*(3+4)" reste inchangé
@@ -43,6 +51,10 @@ public class ParentheseService {
             profondeur = calculerProfondeurInverse(c, profondeur);
             if (c == operateur && profondeur == 0) 
             {
+                // Ignorer si c'est un signe unaire (début d'expression ou après un opérateur/parenthèse)
+                if (estSigneUnaire(equation, i)) {
+                    continue;
+                }
                 if(i != 0)
                 {
                     if(operateur == equation.charAt(i-1))
@@ -54,6 +66,16 @@ public class ParentheseService {
             }
         }
         return -1;
+    }
+
+    //Vérifie si le caractère à la position donnée est un signe unaire (+ ou -)
+    private boolean estSigneUnaire(String equation, int index) {
+        if (index == 0) {
+            return true; // Au début de l'expression, c'est un signe unaire
+        }
+        char precedent = equation.charAt(index - 1);
+        // C'est un signe unaire si le caractère précédent est un opérateur ou une parenthèse ouvrante
+        return operateurs.contains(precedent) || precedent == '(';
     }
 
     //Calcule la profondeur des parenthèses (parcours gauche à droite)
