@@ -2,7 +2,7 @@ package REPL.Commande;
 
 import REPL.Commande.interfaces.ICommande;
 
-public class Help implements ICommande {
+public class Aide implements ICommande {
 
     @Override
     public void execute() {

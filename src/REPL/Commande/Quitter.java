@@ -2,7 +2,7 @@ package REPL.Commande;
 
 import REPL.Commande.interfaces.ICommande;
 
-public class quitter implements ICommande {
+public class Quitter implements ICommande {
 
     @Override
     public void execute() {

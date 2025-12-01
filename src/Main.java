@@ -18,7 +18,7 @@ public class Main {
 
         ConstructeurArbreEquation constructeurArbreEquation = new ConstructeurArbreEquation(chaineOperateurs, symboleMaps, parentheseService);
 
-        IExpression noeudFinal = constructeurArbreEquation.construire(a);
+        IExpression noeudFinal = constructeurArbreEquation.construire(equationSimple);
         System.out.println("Résultat: " + noeudFinal.Resoudre());
     }
 }
