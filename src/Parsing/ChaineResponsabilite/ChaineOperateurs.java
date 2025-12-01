@@ -1,14 +1,13 @@
 package Parsing.ChaineResponsabilite;
 
-import java.util.Set;
-
 import Parsing.ChaineResponsabilite.Interfaces.IOperateurHandler;
 
 public class ChaineOperateurs {
     private IOperateurHandler debut;
+    private final ParentheseService _parentheseService;
     
-    public ChaineOperateurs(Set<Character> operateurs) {
-        ParentheseService parentheseService = new ParentheseService(operateurs);
+    public ChaineOperateurs(ParentheseService parentheseService) {
+        this._parentheseService = parentheseService;
         
         // Construire la chaîne dans l'ordre de priorité
         AdditionHandler addition = new AdditionHandler();
@@ -17,10 +16,10 @@ public class ChaineOperateurs {
         DivisionHandler division = new DivisionHandler();
         
         // Injecter le ParentheseService
-        addition.setParentheseService(parentheseService);
-        soustraction.setParentheseService(parentheseService);
-        multiplication.setParentheseService(parentheseService);
-        division.setParentheseService(parentheseService);
+        addition.setParentheseService(this._parentheseService);
+        soustraction.setParentheseService(this._parentheseService);
+        multiplication.setParentheseService(this._parentheseService);
+        division.setParentheseService(this._parentheseService);
         
         // Chaîner les handlers
         addition.setProchain(soustraction);

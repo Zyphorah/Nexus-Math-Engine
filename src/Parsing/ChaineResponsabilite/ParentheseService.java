@@ -1,15 +1,16 @@
 package Parsing.ChaineResponsabilite;
 
-import java.util.Set;
+import Interpreteur.Registre.RegistreSymbole;
+import Interpreteur.Registre.Interfaces.IRegistreSymbole;
 
 public class ParentheseService {
     
-    private final Set<Character> operateurs;
+    private final IRegistreSymbole _registreSymbole;
 
-    public ParentheseService(Set<Character> operateurs) {
-        this.operateurs = operateurs;
+    public ParentheseService() {
+        this._registreSymbole = new RegistreSymbole();
     }
-     
+    
      //Enlève les parenthèses qui englobent toute l'expression
      //Ex: "(1+2)" -> "1+2", mais "(1+2)*(3+4)" reste inchangé
     public String enleverParenthesesEnglobantes(String equation) {
@@ -75,7 +76,13 @@ public class ParentheseService {
         }
         char precedent = equation.charAt(index - 1);
         // C'est un signe unaire si le caractère précédent est un opérateur ou une parenthèse ouvrante
-        return operateurs.contains(precedent) || precedent == '(';
+        
+        if (this._registreSymbole.estOperateur(precedent)) {
+            return true;
+        } else if (precedent == '(') {
+            return true;
+        }
+        return false;
     }
 
     //Calcule la profondeur des parenthèses (parcours gauche à droite)

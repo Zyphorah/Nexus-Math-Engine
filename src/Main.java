@@ -1,10 +1,10 @@
-import java.util.Map;
 
 import Interpreteur.ConstructeurEquation.ConstructeurArbreEquation;
-import Interpreteur.Factory.Registre.RegistreSymbole;
-import Interpreteur.Factory.Interfaces.INoeudFactory;
 import Interpreteur.Interfaces.IExpression;
+import Interpreteur.Registre.RegistreSymbole;
+import Interpreteur.Registre.Interfaces.IRegistreSymbole;
 import Parsing.ChaineResponsabilite.ChaineOperateurs;
+import Parsing.ChaineResponsabilite.ParentheseService;
 
 public class Main {
    
@@ -13,11 +13,13 @@ public class Main {
         String equationSimple = "((3 + 5) * (2 - 8)) / 2";
         String a = "10";
         
-        Map<Character, INoeudFactory> symboleMaps = new RegistreSymbole().creerSymbole();
-        ChaineOperateurs chaineOperateurs = new ChaineOperateurs(symboleMaps.keySet());
-        ConstructeurArbreEquation constructeurArbreEquation = new ConstructeurArbreEquation(chaineOperateurs, symboleMaps);
+        IRegistreSymbole symboleMaps = new RegistreSymbole();
+        ParentheseService parentheseService  = new ParentheseService();
+        ChaineOperateurs chaineOperateurs = new ChaineOperateurs(parentheseService);
 
-        IExpression noeudFinal = constructeurArbreEquation.construire(a);
+        ConstructeurArbreEquation constructeurArbreEquation = new ConstructeurArbreEquation(chaineOperateurs, symboleMaps, parentheseService);
+
+        IExpression noeudFinal = constructeurArbreEquation.construire(equationSimple);
         System.out.println("Résultat: " + noeudFinal.Resoudre());
     }
 }
