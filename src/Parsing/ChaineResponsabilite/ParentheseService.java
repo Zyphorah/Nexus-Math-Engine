@@ -12,6 +12,8 @@ public class ParentheseService implements IParentheseHandler {
         this._registreSymbole = new RegistreSymbole();
     }
     
+     //Enlève les parenthèses qui englobent toute l'expression
+     //Ex: "(1+2)" -> "1+2", mais "(1+2)*(3+4)" reste inchangé
     public String enleverParenthesesEnglobantes(String equation) {
         equation = equation.trim();
         while (equation.startsWith("(") && equation.endsWith(")") && estEnglobante(equation)) {
