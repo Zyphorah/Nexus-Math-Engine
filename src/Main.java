@@ -11,7 +11,7 @@ public class Main {
     public static void main(String[] args) {
 
         String equationSimple = "((3 + 5) * (2 - 8)) / 2";
-        String a = "+10--10";
+        String a = "10";
         
         Map<Character, INoeudFactory> symboleMaps = new RegistreSymbole().creerSymbole();
         ChaineOperateurs chaineOperateurs = new ChaineOperateurs(symboleMaps.keySet());
