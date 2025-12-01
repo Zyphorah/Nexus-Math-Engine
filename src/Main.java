@@ -1,4 +1,3 @@
-
 import Interpreteur.ConstructeurEquation.ConstructeurArbreEquation;
 import Interpreteur.Interfaces.IExpression;
 import Interpreteur.Registre.RegistreSymbole;
@@ -11,7 +10,7 @@ public class Main {
     public static void main(String[] args) {
 
         String equationSimple = "((3 + 5) * (2 - 8)) / 2";
-        String a = "10";
+        String a = "10+10";
         
         IRegistreSymbole symboleMaps = new RegistreSymbole();
         ParentheseService parentheseService  = new ParentheseService();
@@ -19,7 +18,7 @@ public class Main {
 
         ConstructeurArbreEquation constructeurArbreEquation = new ConstructeurArbreEquation(chaineOperateurs, symboleMaps, parentheseService);
 
-        IExpression noeudFinal = constructeurArbreEquation.construire(equationSimple);
+        IExpression noeudFinal = constructeurArbreEquation.construire(a);
         System.out.println("Résultat: " + noeudFinal.Resoudre());
     }
 }

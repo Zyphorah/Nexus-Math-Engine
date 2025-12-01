@@ -10,6 +10,7 @@ public class Valeur implements IExpression {
     {
         this._valeur = valeur; 
     }
+    
     @Override
     public Double Resoudre() {
         return this._valeur;

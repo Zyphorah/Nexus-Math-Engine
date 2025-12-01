@@ -1,6 +1,6 @@
 package Interpreteur.Interfaces;
 
-public interface IArbre extends IExpression
+public interface INoeud extends IExpression
 {
     void ajouterExpression(IExpression gauche, IExpression droite);
 }

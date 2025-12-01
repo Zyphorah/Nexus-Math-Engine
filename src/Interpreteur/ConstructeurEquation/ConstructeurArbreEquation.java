@@ -1,27 +1,27 @@
 package Interpreteur.ConstructeurEquation;
 
 import Interpreteur.Valeur;
-import Interpreteur.Interfaces.IArbre;
+import Interpreteur.Interfaces.INoeud;
 import Interpreteur.Interfaces.IExpression;
 import Interpreteur.Registre.Interfaces.IRegistreSymbole;
 import Parsing.ChaineResponsabilite.ChaineOperateurs;
-import Parsing.ChaineResponsabilite.ParentheseService;
+import Parsing.ChaineResponsabilite.Interfaces.IParentheseHandler;
 
 public class ConstructeurArbreEquation {
 
     private final ChaineOperateurs _chaineOperateurs;
-    private final ParentheseService _parentheseService;
+    private final IParentheseHandler _parentheseHandler;
     private final IRegistreSymbole _symboleMaps;
 
-    public ConstructeurArbreEquation(ChaineOperateurs chaineOperateurs, IRegistreSymbole symboleMaps, ParentheseService parentheseService)
+    public ConstructeurArbreEquation(ChaineOperateurs chaineOperateurs, IRegistreSymbole symboleMaps, IParentheseHandler parentheseHandler)
     {
         this._chaineOperateurs = chaineOperateurs;
         this._symboleMaps = symboleMaps;
-        this._parentheseService = parentheseService;
+        this._parentheseHandler = parentheseHandler;
     }
 
     public IExpression construire(String equation) {
-        equation = this._parentheseService.enleverParenthesesEnglobantes(equation);
+        equation = this._parentheseHandler.enleverParenthesesEnglobantes(equation);
 
         // Une chaine de responsabilité pour gérer l'ordre des priorité
         int index = this._chaineOperateurs.trouverOperateur(equation);
@@ -38,7 +38,7 @@ public class ConstructeurArbreEquation {
         IExpression noeudGauche = construire(partieGauche);
         IExpression noeudDroit = construire(partieDroite);
 
-        IArbre noeud = this._symboleMaps.obtenirNoeud(equation.charAt(index));
+        INoeud noeud = this._symboleMaps.obtenirNoeud(equation.charAt(index));
         
         noeud.ajouterExpression(noeudGauche, noeudDroit);
         

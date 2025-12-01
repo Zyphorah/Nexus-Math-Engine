@@ -1,8 +1,8 @@
 package Interpreteur.Registre.Interfaces;
 
-import Interpreteur.Interfaces.IArbre;
+import Interpreteur.Interfaces.INoeud;
 
 public interface IRegistreSymbole {
-    public IArbre obtenirNoeud(char symbole);
+    public INoeud obtenirNoeud(char symbole);
     public boolean estOperateur(char symbole);
 }

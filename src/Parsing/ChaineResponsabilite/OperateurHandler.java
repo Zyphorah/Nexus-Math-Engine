@@ -1,15 +1,19 @@
 package Parsing.ChaineResponsabilite;
 
 import Parsing.ChaineResponsabilite.Interfaces.IOperateurHandler;
+import Parsing.ChaineResponsabilite.Interfaces.IParentheseHandler;
 
-public abstract class OperateurHandler implements IOperateurHandler {
+public class OperateurHandler implements IOperateurHandler {
     protected IOperateurHandler prochain;
-    protected ParentheseService parentheseService;
+    protected IParentheseHandler parentheseHandler;
+    protected Operateur operateur;
     
-    protected abstract char getOperateur();
+    public OperateurHandler(Operateur operateur) {
+        this.operateur = operateur;
+    }
 
-    public void setParentheseService(ParentheseService parentheseService) {
-        this.parentheseService = parentheseService;
+    public void setParentheseHandler(IParentheseHandler parentheseHandler) {
+        this.parentheseHandler = parentheseHandler;
     }
     
     @Override
@@ -19,7 +23,7 @@ public abstract class OperateurHandler implements IOperateurHandler {
     
     @Override
     public int trouverOperateur(String equation) {
-        return parentheseService.trouverDernierAuNiveauZero(equation, getOperateur());
+        return parentheseHandler.trouverDernierAuNiveauZero(equation, operateur.getSymbole());
     }
     
     @Override

@@ -1,25 +1,26 @@
 package Parsing.ChaineResponsabilite;
 
 import Parsing.ChaineResponsabilite.Interfaces.IOperateurHandler;
+import Parsing.ChaineResponsabilite.Interfaces.IParentheseHandler;
 
 public class ChaineOperateurs {
     private IOperateurHandler debut;
-    private final ParentheseService _parentheseService;
+    private final IParentheseHandler _parentheseHandler;
     
-    public ChaineOperateurs(ParentheseService parentheseService) {
-        this._parentheseService = parentheseService;
+    public ChaineOperateurs(IParentheseHandler parentheseHandler) {
+        this._parentheseHandler = parentheseHandler;
         
         // Construire la chaîne dans l'ordre de priorité
-        AdditionHandler addition = new AdditionHandler();
-        SoustractionHandler soustraction = new SoustractionHandler();
-        MultiplicationHandler multiplication = new MultiplicationHandler();
-        DivisionHandler division = new DivisionHandler();
+        OperateurHandler addition = new OperateurHandler(Operateur.ADDITION);
+        OperateurHandler soustraction = new OperateurHandler(Operateur.SOUSTRACTION);
+        OperateurHandler multiplication = new OperateurHandler(Operateur.MULTIPLICATION);
+        OperateurHandler division = new OperateurHandler(Operateur.DIVISION);
         
-        // Injecter le ParentheseService
-        addition.setParentheseService(this._parentheseService);
-        soustraction.setParentheseService(this._parentheseService);
-        multiplication.setParentheseService(this._parentheseService);
-        division.setParentheseService(this._parentheseService);
+        // Injecter le ParentheseHandler
+        addition.setParentheseHandler(this._parentheseHandler);
+        soustraction.setParentheseHandler(this._parentheseHandler);
+        multiplication.setParentheseHandler(this._parentheseHandler);
+        division.setParentheseHandler(this._parentheseHandler);
         
         // Chaîner les handlers
         addition.setProchain(soustraction);

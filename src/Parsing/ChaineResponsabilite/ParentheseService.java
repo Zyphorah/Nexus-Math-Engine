@@ -2,8 +2,9 @@ package Parsing.ChaineResponsabilite;
 
 import Interpreteur.Registre.RegistreSymbole;
 import Interpreteur.Registre.Interfaces.IRegistreSymbole;
+import Parsing.ChaineResponsabilite.Interfaces.IParentheseHandler;
 
-public class ParentheseService {
+public class ParentheseService implements IParentheseHandler {
     
     private final IRegistreSymbole _registreSymbole;
 
