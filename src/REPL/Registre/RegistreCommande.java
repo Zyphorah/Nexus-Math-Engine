@@ -2,6 +2,8 @@ package REPL.Registre;
 import java.util.HashMap;
 import java.util.Map;
 
+import Parsing.ChaineResponsabilite.ChaineOperateurs;
+import Parsing.ChaineResponsabilite.ParentheseService;
 import REPL.Commande.*;
 import REPL.Commande.interfaces.ICommande;
 import REPL.Historique.Historique;
@@ -11,10 +13,14 @@ import Stockage.StockageVariable;
 public class RegistreCommande implements IRegistreCommande {
     private final Map<String, ICommande> _commandes;
     private final Historique historique;
+    private final ParentheseService parentheseService;
+    private final ChaineOperateurs chaineOperateurs;
     
     public RegistreCommande() {
         this.historique = new Historique();
         this._commandes = new HashMap<>();
+        this.parentheseService = new ParentheseService();
+        this.chaineOperateurs = new ChaineOperateurs(parentheseService);
         initialiserCommandes();
     }
     
@@ -22,7 +28,7 @@ public class RegistreCommande implements IRegistreCommande {
         this._commandes.put("analyse", new Analyse(historique));
         this._commandes.put("aide", new Aide(historique));
         this._commandes.put("histoire", new Histoire(historique));
-        this._commandes.put("calculer", new Calculer(historique));
+        this._commandes.put("calculer", new Calculer(historique, parentheseService, chaineOperateurs));
         this._commandes.put("chargerConstance", new ChargerConstance(historique));
         this._commandes.put("var", new Variable(new StockageVariable(new HashMap<>()), historique));
     }
