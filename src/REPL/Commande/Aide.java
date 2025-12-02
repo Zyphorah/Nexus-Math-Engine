@@ -6,6 +6,7 @@ public class Aide implements ICommande {
 
     @Override
     public void execute() {
+        System.out.println("________________________________________");
         System.out.println("analyse");
         System.out.println("chargerConstance pathFichier");
         System.out.println("var nomVar = valeur");

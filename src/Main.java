@@ -4,6 +4,7 @@ import Interpreteur.Registre.RegistreSymbole;
 import Interpreteur.Registre.Interfaces.IRegistreSymbole;
 import Parsing.ChaineResponsabilite.ChaineOperateurs;
 import Parsing.ChaineResponsabilite.ParentheseService;
+import REPL.REPL;
 
 public class Main {
    
@@ -20,5 +21,8 @@ public class Main {
 
         IExpression noeudFinal = constructeurArbreEquation.construire(equationSimple);
         System.out.println("Résultat: " + noeudFinal.Resoudre());
+
+        REPL repl = new REPL(); 
+        repl.lancerREPL();
     }
 }
