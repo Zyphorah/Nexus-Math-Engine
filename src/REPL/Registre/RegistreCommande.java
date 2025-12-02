@@ -19,11 +19,11 @@ public class RegistreCommande implements IRegistreCommande {
     }
     
     private void initialiserCommandes() {
-        this._commandes.put("analyse", new Analyse());
+        this._commandes.put("analyse", new Analyse(historique));
         this._commandes.put("aide", new Aide(historique));
         this._commandes.put("histoire", new Histoire(historique));
         this._commandes.put("calculer", new Calculer(historique));
-        this._commandes.put("chargerConstance", new ChargerConstance());
+        this._commandes.put("chargerConstance", new ChargerConstance(historique));
         this._commandes.put("var", new Variable(new StockageVariable(new HashMap<>()), historique));
     }
     
