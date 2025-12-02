@@ -1,3 +1,4 @@
+package REPL.Registre.Interfaces;
 import REPL.Commande.interfaces.ICommande;
 
 public interface IRegistreCommande {

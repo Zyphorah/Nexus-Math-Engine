@@ -4,24 +4,27 @@ import java.util.Map;
 
 import REPL.Commande.*;
 import REPL.Commande.interfaces.ICommande;
+import REPL.Historique.Historique;
 import REPL.Registre.Interfaces.IRegistreCommande;
 import Stockage.StockageVariable;
 
 public class RegistreCommande implements IRegistreCommande {
     private final Map<String, ICommande> _commandes;
+    private final Historique historique;
     
     public RegistreCommande() {
+        this.historique = new Historique();
         this._commandes = new HashMap<>();
         initialiserCommandes();
     }
     
     private void initialiserCommandes() {
         this._commandes.put("analyse", new Analyse());
-        this._commandes.put("aide", new Aide());
-        this._commandes.put("histoire", new Histoire());
-        this._commandes.put("calculer", new Calculer());
+        this._commandes.put("aide", new Aide(historique));
+        this._commandes.put("histoire", new Histoire(historique));
+        this._commandes.put("calculer", new Calculer(historique));
         this._commandes.put("chargerConstance", new ChargerConstance());
-        this._commandes.put("var", new Variable(new StockageVariable(new HashMap<>())));
+        this._commandes.put("var", new Variable(new StockageVariable(new HashMap<>()), historique));
     }
     
     public ICommande obtenirCommande(String nomCommande) {
@@ -33,7 +36,6 @@ public class RegistreCommande implements IRegistreCommande {
         return commande;
     }
     
-    // Méthodes utiles supplémentaires
     public boolean existe(String nomCommande) {
         return _commandes.containsKey(nomCommande);
     }
