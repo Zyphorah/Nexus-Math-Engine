@@ -7,8 +7,9 @@ import REPL.Registre.RegistreCommande;
 import REPL.Registre.Interfaces.IRegistreCommande;
 
 public class REPL {
-    private IRegistreCommande _registreCommande = new RegistreCommande();
-    private Scanner scanner = new Scanner(System.in);
+    private String _argumentsCourants = "";
+    private final IRegistreCommande _registreCommande = new RegistreCommande(() -> this._argumentsCourants);
+    private final Scanner scanner = new Scanner(System.in);
 
     public void lancerREPL() {
 
@@ -23,7 +24,12 @@ public class REPL {
                 fin = true;
                 break;
             } else if (!saisie.isEmpty()) {
-                ICommande commande = this._registreCommande.obtenirCommande(saisie);
+                // Séparer la commande des arguments
+                String[] parties = saisie.split("\\s+", 2);
+                String nomCommande = parties[0];
+                this._argumentsCourants = parties.length > 1 ? parties[1] : "";
+                
+                ICommande commande = this._registreCommande.obtenirCommande(nomCommande);
                 if (commande != null) {
                     commande.execute();
                 }
