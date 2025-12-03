@@ -2,20 +2,24 @@ package Interpreteur.Registre;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Supplier;
 
 import Interpreteur.Operation;
 import Interpreteur.Interfaces.INoeud;
 import Interpreteur.Registre.Interfaces.IRegistreSymbole;
+// Patron de création anonyme
+// lamda de new pour les operations 
+// méta programmation 
 
 public class RegistreSymbole implements IRegistreSymbole {
-    private final Map<Character, INoeud> symboleMaps;
+    private final Map<Character, Supplier<INoeud>> symboleMaps;
     
     public RegistreSymbole() {
         symboleMaps = new HashMap<>();
-        symboleMaps.put('+', new Operation((a,b)-> a+b));
-        symboleMaps.put('-', new Operation((a,b)-> a-b));
-        symboleMaps.put('*', new Operation((a,b)-> a*b));
-        symboleMaps.put('/', new Operation((a, b) -> 
+        symboleMaps.put('+', () -> new Operation((a,b)-> a+b));
+        symboleMaps.put('-', () -> new Operation((a,b)-> a-b));
+        symboleMaps.put('*', () -> new Operation((a,b)-> a*b));
+        symboleMaps.put('/', () -> new Operation((a, b) -> 
         {
             if (b == 0) {
                 throw new ArithmeticException("Division par zéro détectée");
@@ -25,11 +29,11 @@ public class RegistreSymbole implements IRegistreSymbole {
     }
      
     public INoeud obtenirNoeud(char symbole) {
-        INoeud noeud = symboleMaps.get(symbole);
-        if (noeud == null) {
+        Supplier<INoeud> supplier = symboleMaps.get(symbole);
+        if (supplier == null) {
             throw new IllegalArgumentException("Symbole inconnu: " + symbole);
         }
-        return noeud;
+        return supplier.get();
     }
     
     public boolean estOperateur(char symbole) {

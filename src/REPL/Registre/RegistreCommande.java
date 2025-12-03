@@ -31,7 +31,7 @@ public class RegistreCommande implements IRegistreCommande {
         this._commandes.put("histoire", new Histoire(historique));
         this._commandes.put("calculer", new Calculer(historique, parentheseService, chaineOperateurs, argumentsSupplier));
         this._commandes.put("chargerConstance", new ChargerConstance(historique));
-        this._commandes.put("var", new Variable(new StockageVariable(new HashMap<>()), historique));
+        this._commandes.put("var", new Variable(new StockageVariable(), historique, argumentsSupplier));
     }
     
     public ICommande obtenirCommande(String nomCommande) {
