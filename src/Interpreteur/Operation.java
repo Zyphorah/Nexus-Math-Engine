@@ -13,7 +13,7 @@ public class Operation implements INoeud {
     }
 
     @Override
-    public void ajouterExpression(IExpression gauche, IExpression droite) {
+    public INoeud ajouterExpression(IExpression gauche, IExpression droite) {
         if (droite == null || gauche == null) {
             throw new IllegalArgumentException("Les noeuds fournis sont nuls");
         }
@@ -23,6 +23,7 @@ public class Operation implements INoeud {
         } else {
             throw new IllegalStateException("Les noeuds existent déjà pour cette opération");
         }
+        return this;
     }
 
     @Override

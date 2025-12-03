@@ -9,16 +9,20 @@ import Parsing.ChaineResponsabilite.ChaineOperateurs;
 import Parsing.ChaineResponsabilite.Interfaces.IParentheseHandler;
 import REPL.Commande.interfaces.ICommande;
 import REPL.Historique.Historique;
+import Stockage.SubstituteurVariable;
+import Stockage.Interfaces.IVarStockage;
 
 public class Calculer implements ICommande {
     private final IParentheseHandler _ParentheseHandler;
     private final ChaineOperateurs _ChaineOperateurs;
     private final Supplier<String> _argumentsSupplier;
+    private final SubstituteurVariable _substituteurVariable;
 
-    public Calculer(Historique historique, IParentheseHandler parentheseHandler, ChaineOperateurs chaineOperateurs, Supplier<String> argumentsSupplier) {
+    public Calculer(Historique historique, IParentheseHandler parentheseHandler, ChaineOperateurs chaineOperateurs, Supplier<String> argumentsSupplier, IVarStockage stockageVariable) {
         this._ChaineOperateurs = chaineOperateurs;
         this._ParentheseHandler = parentheseHandler;
         this._argumentsSupplier = argumentsSupplier;
+        this._substituteurVariable = new SubstituteurVariable(stockageVariable);
     }
 
     @Override
@@ -30,6 +34,9 @@ public class Calculer implements ICommande {
             return;
         }
 
+        // Substituer les variables par leurs valeurs AVANT la construction de l'arbre
+        String equationSubstituee = this._substituteurVariable.substituer(equation.trim());
+
         RegistreSymbole registreSymbole = new RegistreSymbole();
         ConstructeurArbreEquation constructeurArbreEquation = new ConstructeurArbreEquation(
             this._ChaineOperateurs, 
@@ -37,7 +44,7 @@ public class Calculer implements ICommande {
             this._ParentheseHandler
         );
 
-        IExpression noeudFinal = constructeurArbreEquation.construire(equation.trim());
+        IExpression noeudFinal = constructeurArbreEquation.construire(equationSubstituee);
         System.out.println("Résultat: " + noeudFinal.Resoudre());
     }
 }

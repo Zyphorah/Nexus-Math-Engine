@@ -1,7 +1,6 @@
 package Interpreteur.ConstructeurEquation;
 
 import Interpreteur.Valeur;
-import Interpreteur.Interfaces.INoeud;
 import Interpreteur.Interfaces.IExpression;
 import Interpreteur.Registre.Interfaces.IRegistreSymbole;
 import Parsing.ChaineResponsabilite.ChaineOperateurs;
@@ -27,21 +26,8 @@ public class ConstructeurArbreEquation {
         int index = this._chaineOperateurs.trouverOperateur(equation);
 
         // Si aucune opérateur trouvé, parser avec une valeur simple
-        if (index == -1) {
-            Double valeur = Double.parseDouble(equation.trim());
-            return new Valeur(valeur);
-        }
-        
-        String partieGauche = equation.substring(0, index).trim();
-        String partieDroite = equation.substring(index + 1).trim();
-        
-        IExpression noeudGauche = construire(partieGauche);
-        IExpression noeudDroit = construire(partieDroite);
+        if (index == -1) return new Valeur(Double.parseDouble(equation.trim()));
 
-        INoeud noeud = this._symboleMaps.obtenirNoeud(equation.charAt(index));
-        
-        noeud.ajouterExpression(noeudGauche, noeudDroit);
-        
-        return noeud;
+        return this._symboleMaps.obtenirNoeud(equation.charAt(index)).ajouterExpression(construire(equation.substring(0, index).trim()), construire(equation.substring(index + 1).trim()));
     }
 }
