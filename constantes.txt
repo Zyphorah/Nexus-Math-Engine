@@ -1,0 +1,11 @@
+# Paquet de constantes par défaut
+# Format: nom = valeur
+
+# Constantes mathématiques
+pi = 3.14159265358979
+phi = 1.61803398874989
+e = 2.71828182845904
+
+# Constantes physiques
+g = 9.80665
+c = 299792458

@@ -7,9 +7,8 @@ import java.util.function.Supplier;
 import Interpreteur.Operation;
 import Interpreteur.Interfaces.INoeud;
 import Interpreteur.Registre.Interfaces.IRegistreSymbole;
-// Patron de création anonyme
+
 // lamda de new pour les operations 
-// méta programmation 
 
 public class RegistreSymbole implements IRegistreSymbole {
     private final Map<Character, Supplier<INoeud>> symboleMaps;

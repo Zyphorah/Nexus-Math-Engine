@@ -10,6 +10,7 @@ import Parsing.ChaineResponsabilite.Interfaces.IParentheseHandler;
 import REPL.Commande.interfaces.ICommande;
 import REPL.Historique.Historique;
 import Stockage.SubstituteurVariable;
+import Stockage.Interfaces.IConstanteStockage;
 import Stockage.Interfaces.IVarStockage;
 
 public class Calculer implements ICommande {
@@ -18,11 +19,11 @@ public class Calculer implements ICommande {
     private final Supplier<String> _argumentsSupplier;
     private final SubstituteurVariable _substituteurVariable;
 
-    public Calculer(Historique historique, IParentheseHandler parentheseHandler, ChaineOperateurs chaineOperateurs, Supplier<String> argumentsSupplier, IVarStockage stockageVariable) {
+    public Calculer(Historique historique, IParentheseHandler parentheseHandler, ChaineOperateurs chaineOperateurs, Supplier<String> argumentsSupplier, IVarStockage stockageVariable, IConstanteStockage stockageConstante) {
         this._ChaineOperateurs = chaineOperateurs;
         this._ParentheseHandler = parentheseHandler;
         this._argumentsSupplier = argumentsSupplier;
-        this._substituteurVariable = new SubstituteurVariable(stockageVariable);
+        this._substituteurVariable = new SubstituteurVariable(stockageVariable, stockageConstante);
     }
 
     @Override
@@ -30,21 +31,24 @@ public class Calculer implements ICommande {
         String equation = this._argumentsSupplier.get();
         
         if (equation == null || equation.trim().isEmpty()) {
-            System.out.println("Erreur: Veuillez fournir une équation. Exemple: calculer (3 + 5) * 2");
+            System.out.println("Erreur: Veuillez fournir une équation. Exemple: (3 + 5) * 2");
             return;
         }
 
-        // Substituer les variables par leurs valeurs AVANT la construction de l'arbre
-        String equationSubstituee = this._substituteurVariable.substituer(equation.trim());
+        try {
+            String equationSubstituee = this._substituteurVariable.substituer(equation.trim());
 
-        RegistreSymbole registreSymbole = new RegistreSymbole();
-        ConstructeurArbreEquation constructeurArbreEquation = new ConstructeurArbreEquation(
-            this._ChaineOperateurs, 
-            registreSymbole, 
-            this._ParentheseHandler
-        );
+            RegistreSymbole registreSymbole = new RegistreSymbole();
+            ConstructeurArbreEquation constructeurArbreEquation = new ConstructeurArbreEquation(
+                this._ChaineOperateurs, 
+                registreSymbole, 
+                this._ParentheseHandler
+            );
 
-        IExpression noeudFinal = constructeurArbreEquation.construire(equationSubstituee);
-        System.out.println("Résultat: " + noeudFinal.Resoudre());
+            IExpression noeudFinal = constructeurArbreEquation.construire(equationSubstituee);
+            System.out.println(noeudFinal.Resoudre());
+        } catch (Exception e) {
+            System.out.println("Erreur: " + e.getMessage());
+        }
     }
 }

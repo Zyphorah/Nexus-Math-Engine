@@ -3,3 +3,7 @@ Aide
 var
 var test = 1
 var test = 1
+aide
+var pi = 1
+aide
+analyse 234-4

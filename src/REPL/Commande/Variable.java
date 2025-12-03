@@ -5,28 +5,31 @@ import java.util.function.Supplier;
 
 import REPL.Commande.interfaces.ICommande;
 import REPL.Historique.Historique;
+import Stockage.Interfaces.IConstanteStockage;
 import Stockage.Interfaces.IVarStockage;
 
 public class Variable implements ICommande {
 
-    private final Historique historique;
-    private final IVarStockage stockageVariable;
-    private final Supplier<String> argumentsSupplier;
+    private final Historique _historique;
+    private final IVarStockage _stockageVariable;
+    private final IConstanteStockage _stockageConstante;
+    private final Supplier<String> _argumentsSupplier;
 
-    public Variable(IVarStockage stockageVariable, Historique historique, Supplier<String> argumentsSupplier)
+    public Variable(IVarStockage stockageVariable, IConstanteStockage stockageConstante, Historique historique, Supplier<String> argumentsSupplier)
     {
-        this.historique = historique;
-        this.stockageVariable = stockageVariable;
-        this.argumentsSupplier = argumentsSupplier;
+        this._historique = historique;
+        this._stockageVariable = stockageVariable;
+        this._stockageConstante = stockageConstante;
+        this._argumentsSupplier = argumentsSupplier;
     }
     
     @Override
     public void execute() {
-        String arguments = this.argumentsSupplier.get();
+        String arguments = this._argumentsSupplier.get();
         
-        // Si aucun argument, afficher toutes les variables
+        // Si aucun argument, afficher toutes les variables et constantes
         if (arguments == null || arguments.trim().isEmpty()) {
-            afficherToutesVariables();
+            afficherTout();
             return;
         }
         
@@ -36,18 +39,17 @@ public class Variable implements ICommande {
         if (input.contains("=")) {
             traiterAssignation(input);
         } else {
-            // Sinon, afficher la valeur de la variable demandée
-            afficherVariable(input);
+            afficherValeur(input);
         }
         
-        historique.ajouter("var " + arguments);
+        this._historique.ajouter("var " + arguments);
     }
     
     private void traiterAssignation(String input) {
         String[] parties = input.split("=", 2);
         
         if (parties.length != 2) {
-            System.out.println("Erreur: Format invalide. Utilisez: var nomVariable = valeur");
+            System.out.println("Erreur: Format invalide. Utilisez: nomVariable = valeur");
             return;
         }
         
@@ -59,35 +61,58 @@ public class Variable implements ICommande {
             return;
         }
         
+        // Vérifier si c'est une constante (non modifiable)
+        if (this._stockageConstante.existe(nomVariable)) {
+            System.out.println("Erreur: '" + nomVariable + "' est une constante et ne peut pas être modifiée.");
+            return;
+        }
+        
         try {
             Double valeur = Double.parseDouble(valeurStr);
-            stockageVariable.ajouter(nomVariable, valeur);
-            System.out.println("Variable '" + nomVariable + "' = " + valeur);
+            this._stockageVariable.ajouter(nomVariable, valeur);
+            System.out.println(valeur);
         } catch (NumberFormatException e) {
             System.out.println("Erreur: La valeur '" + valeurStr + "' n'est pas un nombre valide.");
         }
     }
     
-    private void afficherVariable(String nomVariable) {
-        try {
-            Double valeur = stockageVariable.obtenir(nomVariable);
-            System.out.println(nomVariable + " = " + valeur);
-        } catch (IllegalArgumentException e) {
-            System.out.println("Erreur: " + e.getMessage());
+    private void afficherValeur(String nom) {
+        if (this._stockageVariable.existe(nom)) {
+            System.out.println(nom + " = " + this._stockageVariable.obtenir(nom));
+        } else if (this._stockageConstante.existe(nom)) {
+            System.out.println("[const] " + nom + " = " + this._stockageConstante.obtenir(nom));
+        } else {
+            System.out.println("Erreur: Variable ou constante inconnue: " + nom);
         }
     }
     
-    private void afficherToutesVariables() {
-        Map<String, Double> variables = stockageVariable.obtenirTout();
+    private void afficherTout() {
+        Map<String, Double> variables = this._stockageVariable.obtenirTout();
+        Map<String, Double> constantes = this._stockageConstante.obtenirTout();
         
-        if (variables.isEmpty()) {
-            System.out.println("Aucune variable stockée.");
+        if (variables.isEmpty() && constantes.isEmpty()) {
+            System.out.println("Aucune variable ou constante stockée.");
             return;
         }
         
-        System.out.println("=== Variables stockées ===");
-        for (Map.Entry<String, Double> entry : variables.entrySet()) {
-            System.out.println("  " + entry.getKey() + " = " + entry.getValue());
+        // Afficher les variables
+        System.out.println("=== Variables ===");
+        if (variables.isEmpty()) {
+            System.out.println("  (aucune)");
+        } else {
+            for (Map.Entry<String, Double> entry : variables.entrySet()) {
+                System.out.println("  " + entry.getKey() + " = " + entry.getValue());
+            }
+        }
+        
+        // Afficher les constantes (préfixées)
+        System.out.println("=== Constantes ===");
+        if (constantes.isEmpty()) {
+            System.out.println("  (aucune)");
+        } else {
+            for (Map.Entry<String, Double> entry : constantes.entrySet()) {
+                System.out.println("  [const] " + entry.getKey() + " = " + entry.getValue());
+            }
         }
     }
 }

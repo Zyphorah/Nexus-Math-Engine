@@ -11,15 +11,26 @@ public class Aide implements ICommande {
     {
         this._historique = historique;
     }
+    
     @Override
     public void execute() {
-        System.out.println("________________________________________");
-        System.out.println("analyse");
-        System.out.println("chargerConstance pathFichier");
-        System.out.println("var nomVar = valeur");
-        System.out.println("histoire");
-        System.out.println("calculer equation");
-        System.out.println("quitter");
-        this._historique.ajouter("Aide");
+        System.out.println("=== Commandes disponibles ===");
+        System.out.println("");
+        System.out.println("  Expression directe:");
+        System.out.println("    42              - Évalue un nombre");
+        System.out.println("    2 + 3 * 4       - Évalue une expression");
+        System.out.println("    x = 5           - Assigne une variable");
+        System.out.println("");
+        System.out.println("  Commandes:");
+        System.out.println("    analyse <expr>  - Analyse une expression (opérateurs, nombres, variables)");
+        System.out.println("    var             - Affiche toutes les variables et constantes");
+        System.out.println("    var <nom>       - Affiche la valeur d'une variable/constante");
+        System.out.println("    var <nom>=<val> - Assigne une variable");
+        System.out.println("    constantes <f>  - Charge un paquet de constantes depuis un fichier");
+        System.out.println("    histoire        - Affiche l'historique des commandes");
+        System.out.println("    aide            - Affiche cette aide");
+        System.out.println("    quitter         - Ferme le programme");
+        System.out.println("");
+        this._historique.ajouter("aide");
     }
 }
