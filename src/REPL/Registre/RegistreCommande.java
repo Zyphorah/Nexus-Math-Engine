@@ -11,6 +11,8 @@ import REPL.Commande.*;
 import REPL.Commande.interfaces.ICommande;
 import REPL.Historique.Historique;
 import REPL.Registre.Interfaces.IRegistreCommande;
+import REPL.Service.AnalyseurExpression;
+import REPL.Service.GestionnaireVariable;
 import Stockage.StockageConstante;
 import Stockage.StockageVariable;
 import Stockage.Interfaces.IConstanteStockage;
@@ -24,6 +26,8 @@ public class RegistreCommande implements IRegistreCommande {
     private final IVarStockage _stockageVariable;
     private final IConstanteStockage _stockageConstante;
     private final IRegistreSymbole _registreSymbole;
+    private final AnalyseurExpression _analyseur;
+    private final GestionnaireVariable _gestionnaireVariable;
     
     public RegistreCommande(Supplier<String> argumentsSupplier) {
         this._historique = new Historique();
@@ -33,6 +37,8 @@ public class RegistreCommande implements IRegistreCommande {
         this._stockageVariable = new StockageVariable();
         this._stockageConstante = new StockageConstante();
         this._registreSymbole = new RegistreSymbole();
+        this._analyseur = new AnalyseurExpression(this._stockageConstante);
+        this._gestionnaireVariable = new GestionnaireVariable(this._stockageVariable, this._stockageConstante);
         
         // Charger les constantes par défaut au démarrage
         this._stockageConstante.charger("constantes.txt");
@@ -41,13 +47,13 @@ public class RegistreCommande implements IRegistreCommande {
     }
     
     private void initialiserCommandes(Supplier<String> argumentsSupplier) {
-        this._commandes.put("analyse", new Analyse(this._historique, this._stockageVariable, this._stockageConstante, argumentsSupplier));
+        this._commandes.put("analyse", new Analyse(this._historique, this._analyseur, argumentsSupplier));
         this._commandes.put("aide", new Aide(this._historique));
         this._commandes.put("histoire", new Histoire(this._historique));
         this._commandes.put("calculer", new Calculer(this._historique, this._parentheseService, this._chaineOperateurs, argumentsSupplier, this._stockageVariable, this._stockageConstante, this._registreSymbole));
         this._commandes.put("constantes", new ChargerConstance(this._historique, this._stockageConstante, argumentsSupplier));
-        this._commandes.put("var", new Variable(this._stockageVariable, this._stockageConstante, this._historique, argumentsSupplier));
-        this._commandes.put("vars", new Variable(this._stockageVariable, this._stockageConstante, this._historique, argumentsSupplier));
+        this._commandes.put("var", new Variable(this._gestionnaireVariable, this._historique, argumentsSupplier));
+        this._commandes.put("vars", new Variable(this._gestionnaireVariable, this._historique, argumentsSupplier));
     }
     
     public ICommande obtenirCommande(String nomCommande) {
