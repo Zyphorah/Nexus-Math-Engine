@@ -5,6 +5,8 @@ import java.util.function.Supplier;
 
 import Parsing.ChaineResponsabilite.ChaineOperateurs;
 import Parsing.ChaineResponsabilite.ParentheseService;
+import Interpreteur.Registre.RegistreSymbole;
+import Interpreteur.Registre.Interfaces.IRegistreSymbole;
 import REPL.Commande.*;
 import REPL.Commande.interfaces.ICommande;
 import REPL.Historique.Historique;
@@ -21,6 +23,7 @@ public class RegistreCommande implements IRegistreCommande {
     private final ChaineOperateurs _chaineOperateurs;
     private final IVarStockage _stockageVariable;
     private final IConstanteStockage _stockageConstante;
+    private final IRegistreSymbole _registreSymbole;
     
     public RegistreCommande(Supplier<String> argumentsSupplier) {
         this._historique = new Historique();
@@ -29,6 +32,7 @@ public class RegistreCommande implements IRegistreCommande {
         this._chaineOperateurs = new ChaineOperateurs(_parentheseService);
         this._stockageVariable = new StockageVariable();
         this._stockageConstante = new StockageConstante();
+        this._registreSymbole = new RegistreSymbole();
         
         // Charger les constantes par défaut au démarrage
         this._stockageConstante.charger("constantes.txt");
@@ -37,13 +41,13 @@ public class RegistreCommande implements IRegistreCommande {
     }
     
     private void initialiserCommandes(Supplier<String> argumentsSupplier) {
-        this._commandes.put("analyse", new Analyse(_historique, _stockageVariable, _stockageConstante, argumentsSupplier));
-        this._commandes.put("aide", new Aide(_historique));
-        this._commandes.put("histoire", new Histoire(_historique));
-        this._commandes.put("calculer", new Calculer(_historique, _parentheseService, _chaineOperateurs, argumentsSupplier, _stockageVariable, _stockageConstante));
-        this._commandes.put("constantes", new ChargerConstance(_historique, _stockageConstante, argumentsSupplier));
-        this._commandes.put("var", new Variable(_stockageVariable, _stockageConstante, _historique, argumentsSupplier));
-        this._commandes.put("vars", new Variable(_stockageVariable, _stockageConstante, _historique, argumentsSupplier));
+        this._commandes.put("analyse", new Analyse(this._historique, this._stockageVariable, this._stockageConstante, argumentsSupplier));
+        this._commandes.put("aide", new Aide(this._historique));
+        this._commandes.put("histoire", new Histoire(this._historique));
+        this._commandes.put("calculer", new Calculer(this._historique, this._parentheseService, this._chaineOperateurs, argumentsSupplier, this._stockageVariable, this._stockageConstante, this._registreSymbole));
+        this._commandes.put("constantes", new ChargerConstance(this._historique, this._stockageConstante, argumentsSupplier));
+        this._commandes.put("var", new Variable(this._stockageVariable, this._stockageConstante, this._historique, argumentsSupplier));
+        this._commandes.put("vars", new Variable(this._stockageVariable, this._stockageConstante, this._historique, argumentsSupplier));
     }
     
     public ICommande obtenirCommande(String nomCommande) {

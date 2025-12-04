@@ -4,7 +4,7 @@ import java.util.function.Supplier;
 
 import Interpreteur.ConstructeurEquation.ConstructeurArbreEquation;
 import Interpreteur.Interfaces.IExpression;
-import Interpreteur.Registre.RegistreSymbole;
+import Interpreteur.Registre.Interfaces.IRegistreSymbole;
 import Parsing.ChaineResponsabilite.ChaineOperateurs;
 import Parsing.ChaineResponsabilite.Interfaces.IParentheseHandler;
 import REPL.Commande.interfaces.ICommande;
@@ -18,12 +18,14 @@ public class Calculer implements ICommande {
     private final ChaineOperateurs _ChaineOperateurs;
     private final Supplier<String> _argumentsSupplier;
     private final SubstituteurVariable _substituteurVariable;
+    private final IRegistreSymbole _registreSymbole;
 
-    public Calculer(Historique historique, IParentheseHandler parentheseHandler, ChaineOperateurs chaineOperateurs, Supplier<String> argumentsSupplier, IVarStockage stockageVariable, IConstanteStockage stockageConstante) {
+    public Calculer(Historique historique, IParentheseHandler parentheseHandler, ChaineOperateurs chaineOperateurs, Supplier<String> argumentsSupplier, IVarStockage stockageVariable, IConstanteStockage stockageConstante, IRegistreSymbole registreSymbole) {
         this._ChaineOperateurs = chaineOperateurs;
         this._ParentheseHandler = parentheseHandler;
         this._argumentsSupplier = argumentsSupplier;
         this._substituteurVariable = new SubstituteurVariable(stockageVariable, stockageConstante);
+        this._registreSymbole = registreSymbole;
     }
 
     @Override
@@ -38,10 +40,9 @@ public class Calculer implements ICommande {
         try {
             String equationSubstituee = this._substituteurVariable.substituer(equation.trim());
 
-            RegistreSymbole registreSymbole = new RegistreSymbole();
             ConstructeurArbreEquation constructeurArbreEquation = new ConstructeurArbreEquation(
                 this._ChaineOperateurs, 
-                registreSymbole, 
+                this._registreSymbole, 
                 this._ParentheseHandler
             );
 
