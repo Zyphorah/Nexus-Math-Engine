@@ -3,25 +3,25 @@ package REPL.Detecteur;
 import java.util.List;
 import java.util.function.Consumer;
 
-import REPL.Detecteur.Interfaces.IParseur;
+import REPL.Detecteur.Interfaces.IDetecteurSaisie;
 
 public class ChaineDetecteurs {
     
-    private final List<IParseur> _parseurs;
+    private final List<IDetecteurSaisie> _detecteurs;
     
     public ChaineDetecteurs() {
-        this._parseurs = List.of(
-            new DetecteurAssignation(),
-            new DetecteurExpression(),
-            new ParseurCommande() 
+        this._detecteurs = List.of(
+            new DetecteurAssignation("var"),
+            new DetecteurExpression("calculer"),
+            new DetecteurCommande() 
         );
     }
     
     public void traiter(String saisie, Consumer<String> setArguments, Consumer<String> executerCommande) {
-        for (IParseur parseur : this._parseurs) {
-            if (parseur.correspond(saisie)) {
-                setArguments.accept(parseur.getArguments(saisie));
-                executerCommande.accept(parseur.getNomCommande(saisie));
+        for (IDetecteurSaisie detecteur : this._detecteurs) {
+            if (detecteur.correspond(saisie)) {
+                setArguments.accept(detecteur.getArguments(saisie));
+                executerCommande.accept(detecteur.getNomCommande(saisie));
                 return;
             }
         }

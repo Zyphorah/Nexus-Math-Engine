@@ -6,6 +6,12 @@ public class DetecteurAssignation implements IDetecteurSaisie {
     
     private static final String PATTERN_ASSIGNATION = "[a-zA-Z_]\\w*\\s*=\\s*.+";
     
+    private final String _nomCommande;
+    
+    public DetecteurAssignation(String nomCommande) {
+        this._nomCommande = nomCommande;
+    }
+    
     @Override
     public boolean correspond(String saisie) {
         return saisie.matches(PATTERN_ASSIGNATION);
@@ -13,7 +19,7 @@ public class DetecteurAssignation implements IDetecteurSaisie {
     
     @Override
     public String getNomCommande(String saisie) {
-        return "var";
+        return this._nomCommande;
     }
     
     @Override

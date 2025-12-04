@@ -7,6 +7,12 @@ public class DetecteurExpression implements IDetecteurSaisie {
     private static final String PATTERN_NOMBRE_OU_PARENTHESE = "^[0-9(].*";
     private static final String PATTERN_IDENTIFIANT_OPERATEUR = "^[a-zA-Z_]\\w*[+\\-*/].*";
     
+    private final String _nomCommande;
+    
+    public DetecteurExpression(String nomCommande) {
+        this._nomCommande = nomCommande;
+    }
+    
     @Override
     public boolean correspond(String saisie) {
         return saisie.matches(PATTERN_NOMBRE_OU_PARENTHESE) || 
@@ -15,7 +21,7 @@ public class DetecteurExpression implements IDetecteurSaisie {
     
     @Override
     public String getNomCommande(String saisie) {
-        return "calculer";
+        return this._nomCommande;
     }
     
     @Override
