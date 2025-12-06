@@ -2,6 +2,7 @@ package REPL.Registre.Factory;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 import java.util.function.Supplier;
 import REPL.Commande.interfaces.ICommande;
 
@@ -25,5 +26,10 @@ public class RegistreurCommande implements IRegistreurCommande {
     @Override
     public boolean existe(String nom) {
         return this.commandes.containsKey(nom.toLowerCase());
+    }
+    
+    @Override
+    public Set<String> obtenirNoms() {
+        return this.commandes.keySet();
     }
 }

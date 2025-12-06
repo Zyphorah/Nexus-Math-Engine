@@ -1,6 +1,7 @@
 package REPL.Registre;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 import java.util.function.Supplier;
 
 import REPL.Commande.interfaces.ICommande;
@@ -37,5 +38,9 @@ public class RegistreCommande implements IRegistreCommande {
     
     public boolean existe(String nomCommande) {
         return this._registreur.existe(nomCommande);
+    }
+    
+    public Set<String> obtenirNoms() {
+        return this._registreur.obtenirNoms();
     }
 }

@@ -1,22 +1,23 @@
 package REPL;
 
+import REPL.Registre.Interfaces.IRegistreCommande;
+
 public class DetecteurSaisie {
     
     private static final String PATTERN_ASSIGNATION = "[a-zA-Z_]\\w*\\s*=\\s*.+";
+    private final IRegistreCommande registreCommande;
+    
+    public DetecteurSaisie(IRegistreCommande registreCommande) {
+        this.registreCommande = registreCommande;
+    }
     
     public String detecterCommande(String saisie) {
         // Extraire le premier mot
         String[] parties = saisie.split("\\s+", 2);
         String premierMot = parties[0];
         
-        // Vérifier d'abord si c'est une commande connue
-        if (premierMot.equalsIgnoreCase("aide") || 
-            premierMot.equalsIgnoreCase("histoire") || 
-            premierMot.equalsIgnoreCase("analyse") || 
-            premierMot.equalsIgnoreCase("constantes") || 
-            premierMot.equalsIgnoreCase("var") || 
-            premierMot.equalsIgnoreCase("vars") ||
-            premierMot.equalsIgnoreCase("calculer")) {
+        // Vérifier d'abord si c'est une commande connue (dynamiquement)
+        if (registreCommande.existe(premierMot)) {
             return premierMot.toLowerCase();
         }
         
@@ -34,13 +35,7 @@ public class DetecteurSaisie {
         String premierMot = parties[0];
         
         // Si le premier mot est une commande, retourner les arguments uniquement
-        if (premierMot.equalsIgnoreCase("aide") || 
-            premierMot.equalsIgnoreCase("histoire") || 
-            premierMot.equalsIgnoreCase("analyse") || 
-            premierMot.equalsIgnoreCase("constantes") || 
-            premierMot.equalsIgnoreCase("var") || 
-            premierMot.equalsIgnoreCase("vars") ||
-            premierMot.equalsIgnoreCase("calculer")) {
+        if (registreCommande.existe(premierMot)) {
             return parties.length > 1 ? parties[1] : "";
         }
         

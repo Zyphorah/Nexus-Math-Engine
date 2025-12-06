@@ -46,7 +46,7 @@ public class Main {
         Interpreteur.ConstructeurEquation.ConstructeurArbreEquation constructeurArbreEquation = new Interpreteur.ConstructeurEquation.ConstructeurArbreEquation(chaineOperateurs, registreSymbole, parentheseService);
         
         // Créer l'analyseur et l'évaluateur
-        AnalyseurExpression analyseur = new AnalyseurExpression(stockageConstante);
+        AnalyseurExpression analyseur = new AnalyseurExpression(stockageConstante, registreSymbole);
         EvaluateurExpression evaluateur = new EvaluateurExpression(constructeurArbreEquation, substituteurVariable);
         
         // Créer le gestionnaire de variables
@@ -72,7 +72,7 @@ public class Main {
         RegistreCommande registreCommande = new RegistreCommande(registreurCommande);
         
         // Créer les objets REPL nécessaires
-        DetecteurSaisie detecteur = new DetecteurSaisie();
+        DetecteurSaisie detecteur = new DetecteurSaisie(registreCommande);
         Scanner scanner = new Scanner(System.in);
         
         // Lancer la REPL

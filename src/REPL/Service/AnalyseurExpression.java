@@ -2,11 +2,14 @@ package REPL.Service;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import Interpreteur.Registre.Interfaces.IRegistreSymbole;
 import Stockage.Interfaces.IConstanteStockage;
 
 public class AnalyseurExpression {
@@ -15,21 +18,39 @@ public class AnalyseurExpression {
     private static final Pattern PATTERN_IDENTIFIANT = Pattern.compile("[a-zA-Z_]\\w*");
     
     private final IConstanteStockage _stockageConstante;
+    private final IRegistreSymbole _registreSymbole;
     
-    public AnalyseurExpression(IConstanteStockage stockageConstante) {
+    public AnalyseurExpression(IConstanteStockage stockageConstante, IRegistreSymbole registreSymbole) {
         this._stockageConstante = stockageConstante;
+        this._registreSymbole = registreSymbole;
     }
     
     public ResultatAnalyse analyser(String expression) {
         return new ResultatAnalyse(
-            compterCaractere(expression, '+'),
-            compterCaractere(expression, '-'),
-            compterCaractere(expression, '/'),
-            compterCaractere(expression, '*'),
+            compterOperateurs(expression),
             extraireNombres(expression),
             extraireVariables(expression),
             extraireConstantes(expression)
         );
+    }
+    
+    private Map<Character, Integer> compterOperateurs(String expression) {
+        Map<Character, Integer> comptages = new LinkedHashMap<>();
+        
+        // Initialiser tous les opérateurs du registre
+        for (char symbole : _registreSymbole.obtenirSymboles()) {
+            comptages.put(symbole, 0);
+        }
+        
+        // Compter les occurrences
+        for (int i = 0; i < expression.length(); i++) {
+            char c = expression.charAt(i);
+            if (comptages.containsKey(c)) {
+                comptages.put(c, comptages.get(c) + 1);
+            }
+        }
+        
+        return comptages;
     }
     
     private List<String> extraireNombres(String expression) {
@@ -63,13 +84,5 @@ public class AnalyseurExpression {
             }
         }
         return constantes;
-    }
-    
-    private int compterCaractere(String str, char c) {
-        int count = 0;
-        for (int i = 0; i < str.length(); i++) {
-            if (str.charAt(i) == c) count++;
-        }
-        return count;
     }
 }
