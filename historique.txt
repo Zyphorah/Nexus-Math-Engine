@@ -1,20 +1,20 @@
-analyse 23 +23 -32
-var a = 1
-var b = 2
-var c = a + b
-var b = a + b
-aide
-aide
-var a
 vars
 var
+var a = 2
+var
+2+3*4
+var x=5
+x*2
+2+3*4
+10/2-3
+2+3*4
+5-2*1
+2+3*4
+5-2*1
+2+3*4
+5-2*1
 aide
-var x=5
-var y=3
-vars
-5*4+2
-var a=10
-var b=3
-a*b
-var x=5
-x*2+3
+1+1
+1+1-3-(1+1)
+1?1
+1?1?1?1

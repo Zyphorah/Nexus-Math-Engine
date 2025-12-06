@@ -6,10 +6,10 @@ import Parsing.ChaineResponsabilite.Interfaces.IParentheseHandler;
 public class OperateurHandler implements IOperateurHandler {
     protected IOperateurHandler prochain;
     protected IParentheseHandler parentheseHandler;
-    protected Operateur operateur;
+    protected char symbole;
     
-    public OperateurHandler(Operateur operateur) {
-        this.operateur = operateur;
+    public OperateurHandler(char symbole) {
+        this.symbole = symbole;
     }
 
     public void setParentheseHandler(IParentheseHandler parentheseHandler) {
@@ -23,7 +23,7 @@ public class OperateurHandler implements IOperateurHandler {
     
     @Override
     public int trouverOperateur(String equation) {
-        return parentheseHandler.trouverDernierAuNiveauZero(equation, operateur.getSymbole());
+        return parentheseHandler.trouverDernierAuNiveauZero(equation, symbole);
     }
     
     @Override

@@ -6,7 +6,6 @@ import Interpreteur.Operation;
 import Interpreteur.Registre.RegistreSymbole;
 import Interpreteur.Registre.Interfaces.IRegistreSymbole;
 import Parsing.ChaineResponsabilite.ChaineOperateurs;
-import Parsing.ChaineResponsabilite.Operateur;
 import Parsing.ChaineResponsabilite.OperateurHandler;
 import Parsing.ChaineResponsabilite.ParentheseService;
 import REPL.REPL;
@@ -25,13 +24,11 @@ import Stockage.Interfaces.IVarStockage;
 
 public class Main {
     public static void main(String[] args) {
-        // === CRÉATION DES OBJETS PAR LE MAIN ===
         
-        // Créer le registre des symboles (opérateurs)
         IRegistreSymbole registreSymbole = creerRegistreSymbole();
         
         // Créer les opérateurs et la chaîne
-        List<OperateurHandler> operateurs = creerOperateurHandler();
+        List<OperateurHandler> operateurs = creerOperateurHandler(registreSymbole);
         ParentheseService parentheseService = new ParentheseService(registreSymbole);
         ChaineOperateurs chaineOperateurs = new ChaineOperateurs(parentheseService, operateurs);
         
@@ -87,7 +84,9 @@ public class Main {
     
     private static IRegistreSymbole creerRegistreSymbole() {
         RegistreSymbole registre = new RegistreSymbole();
-        
+        // L'ordre d'enregistrement détermine la priorité
+        // Premier enregistré = PRIORITÉ BASSE
+        // Dernier enregistré = PRIORITÉ HAUTE  
         registre.enregistrer('+', () -> new Operation((a, b) -> a + b));
         registre.enregistrer('-', () -> new Operation((a, b) -> a - b));
         registre.enregistrer('*', () -> new Operation((a, b) -> a * b));
@@ -101,18 +100,13 @@ public class Main {
         return registre;
     }
 
-    private static List<OperateurHandler> creerOperateurHandler() {
+    private static List<OperateurHandler> creerOperateurHandler(IRegistreSymbole registreSymbole) {
         List<OperateurHandler> operateurs = new ArrayList<>();
-        // Construire la chaîne dans l'ordre de priorité
-        OperateurHandler addition = new OperateurHandler(Operateur.ADDITION);
-        OperateurHandler soustraction = new OperateurHandler(Operateur.SOUSTRACTION);
-        OperateurHandler multiplication = new OperateurHandler(Operateur.MULTIPLICATION);
-        OperateurHandler division = new OperateurHandler(Operateur.DIVISION);
-
-        operateurs.add(addition);
-        operateurs.add(soustraction);
-        operateurs.add(multiplication);
-        operateurs.add(division);
+        
+        // Générer automatiquement la chaîne depuis l'ordre d'enregistrement du registre
+        for (char symbole : registreSymbole.obtenirSymboles()) {
+            operateurs.add(new OperateurHandler(symbole));
+        }
 
         return operateurs;
     }
