@@ -3,67 +3,39 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Supplier;
 
-import Parsing.ChaineResponsabilite.ChaineOperateurs;
-import Parsing.ChaineResponsabilite.ParentheseService;
-import Interpreteur.Registre.Interfaces.IRegistreSymbole;
-import REPL.Commande.*;
 import REPL.Commande.interfaces.ICommande;
-import REPL.Historique.Historique;
 import REPL.Registre.Interfaces.IRegistreCommande;
-import REPL.Service.AnalyseurExpression;
-import REPL.Service.GestionnaireVariable;
-import Stockage.StockageConstante;
-import Stockage.StockageVariable;
-import Stockage.Interfaces.IConstanteStockage;
-import Stockage.Interfaces.IVarStockage;
+import REPL.Registre.Factory.IRegistreurCommande;
 
 public class RegistreCommande implements IRegistreCommande {
     private final Map<String, ICommande> _commandes;
-    private final Historique _historique;
-    private final ParentheseService _parentheseService;
-    private final ChaineOperateurs _chaineOperateurs;
-    private final IVarStockage _stockageVariable;
-    private final IConstanteStockage _stockageConstante;
-    private final IRegistreSymbole _registreSymbole;
-    private final AnalyseurExpression _analyseur;
-    private final GestionnaireVariable _gestionnaireVariable;
+    private final IRegistreurCommande _registreur;
     
-    public RegistreCommande(Supplier<String> argumentsSupplier, IRegistreSymbole registreSymbole, ChaineOperateurs chaineOperateurs) {
-        this._historique = new Historique();
+    public RegistreCommande(IRegistreurCommande registreur) {
         this._commandes = new HashMap<>();
-        this._registreSymbole = registreSymbole;
-        this._parentheseService = new ParentheseService(this._registreSymbole);
-        this._chaineOperateurs = chaineOperateurs; 
-        this._stockageVariable = new StockageVariable();
-        this._stockageConstante = new StockageConstante();
-        this._analyseur = new AnalyseurExpression(this._stockageConstante);
-        this._gestionnaireVariable = new GestionnaireVariable(this._stockageVariable, this._stockageConstante);
-        
-        // Charger les constantes par défaut au démarrage
-        this._stockageConstante.charger("constantes.txt");
-        
-        initialiserCommandes(argumentsSupplier);
+        this._registreur = registreur;
     }
     
-    private void initialiserCommandes(Supplier<String> argumentsSupplier) {
-        this._commandes.put("analyse", new Analyse(this._historique, this._analyseur, argumentsSupplier));
-        this._commandes.put("aide", new Aide(this._historique));
-        this._commandes.put("histoire", new Histoire(this._historique));
-        this._commandes.put("calculer", new Calculer(this._historique, this._parentheseService, this._chaineOperateurs, argumentsSupplier, this._stockageVariable, this._stockageConstante, this._registreSymbole));
-        this._commandes.put("constantes", new ChargerConstance(this._historique, this._stockageConstante, argumentsSupplier));
-        this._commandes.put("var", new Variable(this._gestionnaireVariable, this._historique, argumentsSupplier));
+    public void enregistrer(String nom, Supplier<ICommande> supplier) {
+        this._registreur.enregistrer(nom, supplier);
     }
     
     public ICommande obtenirCommande(String nomCommande) {
-        ICommande commande = this._commandes.get(nomCommande);
+        Supplier<ICommande> supplier = this._registreur.obtenir(nomCommande);
         
-        if (commande == null) {
+        if (supplier == null) {
             System.out.println("Commande inconnue: " + nomCommande + ". Tapez 'aide' pour la liste des commandes.");
+            return null;
         }
-        return commande;
+        
+        // Créer l'instance et la mettre en cache
+        if (!this._commandes.containsKey(nomCommande)) {
+            this._commandes.put(nomCommande, supplier.get());
+        }
+        return this._commandes.get(nomCommande);
     }
     
     public boolean existe(String nomCommande) {
-        return this._commandes.containsKey(nomCommande);
+        return this._registreur.existe(nomCommande);
     }
 }

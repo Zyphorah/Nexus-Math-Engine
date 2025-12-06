@@ -4,28 +4,21 @@ import java.util.function.Supplier;
 
 import Interpreteur.ConstructeurEquation.ConstructeurArbreEquation;
 import Interpreteur.Interfaces.IExpression;
-import Interpreteur.Registre.Interfaces.IRegistreSymbole;
-import Parsing.ChaineResponsabilite.ChaineOperateurs;
-import Parsing.ChaineResponsabilite.Interfaces.IParentheseHandler;
 import REPL.Commande.interfaces.ICommande;
 import REPL.Historique.Historique;
 import Stockage.SubstituteurVariable;
-import Stockage.Interfaces.IConstanteStockage;
-import Stockage.Interfaces.IVarStockage;
 
 public class Calculer implements ICommande {
-    private final IParentheseHandler _ParentheseHandler;
-    private final ChaineOperateurs _ChaineOperateurs;
     private final Supplier<String> _argumentsSupplier;
     private final SubstituteurVariable _substituteurVariable;
-    private final IRegistreSymbole _registreSymbole;
+    private final ConstructeurArbreEquation _constructeurArbreEquation;
+    private final Historique _historique;
 
-    public Calculer(Historique historique, IParentheseHandler parentheseHandler, ChaineOperateurs chaineOperateurs, Supplier<String> argumentsSupplier, IVarStockage stockageVariable, IConstanteStockage stockageConstante, IRegistreSymbole registreSymbole) {
-        this._ChaineOperateurs = chaineOperateurs;
-        this._ParentheseHandler = parentheseHandler;
+    public Calculer(Historique historique, SubstituteurVariable substituteurVariable, ConstructeurArbreEquation constructeurArbreEquation, Supplier<String> argumentsSupplier) {
+        this._historique = historique;
         this._argumentsSupplier = argumentsSupplier;
-        this._substituteurVariable = new SubstituteurVariable(stockageVariable, stockageConstante);
-        this._registreSymbole = registreSymbole;
+        this._substituteurVariable = substituteurVariable;
+        this._constructeurArbreEquation = constructeurArbreEquation;
     }
 
     @Override
@@ -39,15 +32,10 @@ public class Calculer implements ICommande {
 
         try {
             String equationSubstituee = this._substituteurVariable.substituer(equation.trim());
-
-            ConstructeurArbreEquation constructeurArbreEquation = new ConstructeurArbreEquation(
-                this._ChaineOperateurs, 
-                this._registreSymbole, 
-                this._ParentheseHandler
-            );
-
-            IExpression noeudFinal = constructeurArbreEquation.construire(equationSubstituee);
-            System.out.println(noeudFinal.Resoudre());
+            IExpression noeudFinal = this._constructeurArbreEquation.construire(equationSubstituee);
+            double resultat = noeudFinal.Resoudre();
+            System.out.println(resultat);
+            this._historique.ajouter(equation);
         } catch (Exception e) {
             System.out.println("Erreur: " + e.getMessage());
         }
