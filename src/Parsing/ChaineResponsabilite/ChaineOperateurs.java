@@ -1,33 +1,32 @@
 package Parsing.ChaineResponsabilite;
 
+import java.util.List;
+
 import Parsing.ChaineResponsabilite.Interfaces.IOperateurHandler;
 import Parsing.ChaineResponsabilite.Interfaces.IParentheseHandler;
 
 public class ChaineOperateurs {
     private IOperateurHandler debut;
     private final IParentheseHandler _parentheseHandler;
+    private final List<OperateurHandler> _operateurs;
     
-    public ChaineOperateurs(IParentheseHandler parentheseHandler) {
+    public ChaineOperateurs(IParentheseHandler parentheseHandler, List<OperateurHandler> operateurs ) {
         this._parentheseHandler = parentheseHandler;
         
-        // Construire la chaîne dans l'ordre de priorité
-        OperateurHandler addition = new OperateurHandler(Operateur.ADDITION);
-        OperateurHandler soustraction = new OperateurHandler(Operateur.SOUSTRACTION);
-        OperateurHandler multiplication = new OperateurHandler(Operateur.MULTIPLICATION);
-        OperateurHandler division = new OperateurHandler(Operateur.DIVISION);
-        
-        // Injecter le ParentheseHandler
-        addition.setParentheseHandler(this._parentheseHandler);
-        soustraction.setParentheseHandler(this._parentheseHandler);
-        multiplication.setParentheseHandler(this._parentheseHandler);
-        division.setParentheseHandler(this._parentheseHandler);
-        
-        // Chaîner les handlers
-        addition.setProchain(soustraction);
-        soustraction.setProchain(multiplication);
-        multiplication.setProchain(division);
-        
-        this.debut = addition;
+     
+
+        this._operateurs = operateurs; 
+
+        for( int i = 0 ; i < this._operateurs.size(); i ++)
+        {
+            this._operateurs.get(i).setParentheseHandler(this._parentheseHandler);
+            if(i < this._operateurs.size()-1)
+            {
+                this._operateurs.get(i).setProchain(this._operateurs.get(i+1));
+            }
+        }
+
+        this.debut = this._operateurs.get(0);
     }
     
     public int trouverOperateur(String equation) {

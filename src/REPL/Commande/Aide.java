@@ -29,6 +29,7 @@ public class Aide implements ICommande {
         System.out.println("    constantes <f>  - Charge un paquet de constantes depuis un fichier");
         System.out.println("    histoire        - Affiche l'historique des commandes");
         System.out.println("    aide            - Affiche cette aide");
+        System.out.println("    Calculer <Expression> - Calculer une expression"); 
         System.out.println("    quitter         - Ferme le programme");
         System.out.println("");
         this._historique.ajouter("aide");

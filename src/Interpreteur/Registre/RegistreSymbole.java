@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Supplier;
 
-import Interpreteur.Operation;
 import Interpreteur.Interfaces.INoeud;
 import Interpreteur.Registre.Interfaces.IRegistreSymbole;
 
@@ -13,16 +12,10 @@ public class RegistreSymbole implements IRegistreSymbole {
     
     public RegistreSymbole() {
         symboleMaps = new HashMap<>();
-        symboleMaps.put('+', () -> new Operation((a,b)-> a+b));
-        symboleMaps.put('-', () -> new Operation((a,b)-> a-b));
-        symboleMaps.put('*', () -> new Operation((a,b)-> a*b));
-        symboleMaps.put('/', () -> new Operation((a, b) -> 
-        {
-            if (b == 0) {
-                throw new ArithmeticException("Division par zéro détectée");
-            }
-            return a / b;  
-        }));
+    }
+    
+    public void enregistrer(char symbole, Supplier<INoeud> supplier) {
+        symboleMaps.put(symbole, supplier);
     }
      
     public INoeud obtenirNoeud(char symbole) {

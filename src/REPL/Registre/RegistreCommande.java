@@ -5,7 +5,6 @@ import java.util.function.Supplier;
 
 import Parsing.ChaineResponsabilite.ChaineOperateurs;
 import Parsing.ChaineResponsabilite.ParentheseService;
-import Interpreteur.Registre.RegistreSymbole;
 import Interpreteur.Registre.Interfaces.IRegistreSymbole;
 import REPL.Commande.*;
 import REPL.Commande.interfaces.ICommande;
@@ -29,14 +28,14 @@ public class RegistreCommande implements IRegistreCommande {
     private final AnalyseurExpression _analyseur;
     private final GestionnaireVariable _gestionnaireVariable;
     
-    public RegistreCommande(Supplier<String> argumentsSupplier) {
+    public RegistreCommande(Supplier<String> argumentsSupplier, IRegistreSymbole registreSymbole, ChaineOperateurs chaineOperateurs) {
         this._historique = new Historique();
         this._commandes = new HashMap<>();
-        this._parentheseService = new ParentheseService();
-        this._chaineOperateurs = new ChaineOperateurs(_parentheseService);
+        this._registreSymbole = registreSymbole;
+        this._parentheseService = new ParentheseService(this._registreSymbole);
+        this._chaineOperateurs = chaineOperateurs; 
         this._stockageVariable = new StockageVariable();
         this._stockageConstante = new StockageConstante();
-        this._registreSymbole = new RegistreSymbole();
         this._analyseur = new AnalyseurExpression(this._stockageConstante);
         this._gestionnaireVariable = new GestionnaireVariable(this._stockageVariable, this._stockageConstante);
         
@@ -53,7 +52,6 @@ public class RegistreCommande implements IRegistreCommande {
         this._commandes.put("calculer", new Calculer(this._historique, this._parentheseService, this._chaineOperateurs, argumentsSupplier, this._stockageVariable, this._stockageConstante, this._registreSymbole));
         this._commandes.put("constantes", new ChargerConstance(this._historique, this._stockageConstante, argumentsSupplier));
         this._commandes.put("var", new Variable(this._gestionnaireVariable, this._historique, argumentsSupplier));
-        this._commandes.put("vars", new Variable(this._gestionnaireVariable, this._historique, argumentsSupplier));
     }
     
     public ICommande obtenirCommande(String nomCommande) {

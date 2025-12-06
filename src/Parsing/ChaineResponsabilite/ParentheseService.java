@@ -1,6 +1,5 @@
 package Parsing.ChaineResponsabilite;
 
-import Interpreteur.Registre.RegistreSymbole;
 import Interpreteur.Registre.Interfaces.IRegistreSymbole;
 import Parsing.ChaineResponsabilite.Interfaces.IParentheseHandler;
 
@@ -8,8 +7,8 @@ public class ParentheseService implements IParentheseHandler {
     
     private final IRegistreSymbole _registreSymbole;
 
-    public ParentheseService() {
-        this._registreSymbole = new RegistreSymbole();
+    public ParentheseService(IRegistreSymbole registreSymbole) {
+        this._registreSymbole = registreSymbole;
     }
     
      //Enlève les parenthèses qui englobent toute l'expression

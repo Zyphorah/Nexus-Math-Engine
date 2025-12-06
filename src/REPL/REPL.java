@@ -2,8 +2,9 @@ package REPL;
 
 import java.util.Scanner;
 
+import Interpreteur.Registre.Interfaces.IRegistreSymbole;
+import Parsing.ChaineResponsabilite.ChaineOperateurs;
 import REPL.Commande.interfaces.ICommande;
-import REPL.Detecteur.ChaineDetecteurs;
 import REPL.Registre.RegistreCommande;
 import REPL.Registre.Interfaces.IRegistreCommande;
 
@@ -12,23 +13,25 @@ public class REPL {
     private static final String VERSION = "1.0.0";
     
     private String _argumentsCourants = "";
-    private final IRegistreCommande _registreCommande = new RegistreCommande(() -> this._argumentsCourants);
-    private final ChaineDetecteurs _chaineDetecteurs = new ChaineDetecteurs();
+    private final IRegistreCommande _registreCommande;
+    private final DetecteurSaisie _detecteur = new DetecteurSaisie();
     private final Scanner _scanner = new Scanner(System.in);
+
+    public REPL(IRegistreSymbole registreSymbole, ChaineOperateurs chaineOperateurs) {
+        this._registreCommande = new RegistreCommande(() -> this._argumentsCourants, registreSymbole, chaineOperateurs);
+    }
 
     public void lancerREPL() {
         afficherBienvenue();
         
-        Boolean fin = false;
-        while(!fin)
-        {
+        boolean fin = false;
+        while (!fin) {
             System.out.print("> ");
             String entree = this._scanner.nextLine();
             String saisie = entree == null ? "" : entree.trim();
             
             if ("quitter".equalsIgnoreCase(saisie)) {
                 fin = true;
-                break;
             } else if (!saisie.isEmpty()) {
                 traiterSaisie(saisie);
             }
@@ -45,11 +48,9 @@ public class REPL {
     }
     
     private void traiterSaisie(String saisie) {
-        this._chaineDetecteurs.traiter(
-            saisie,
-            args -> this._argumentsCourants = args,
-            this::executerCommande
-        );
+        this._argumentsCourants = this._detecteur.extraireArguments(saisie);
+        String nomCommande = this._detecteur.detecterCommande(saisie);
+        executerCommande(nomCommande);
     }
     
     private void executerCommande(String nomCommande) {
