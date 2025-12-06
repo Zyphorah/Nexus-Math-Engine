@@ -12,9 +12,6 @@ public class ChaineOperateurs {
     
     public ChaineOperateurs(IParentheseHandler parentheseHandler, List<OperateurHandler> operateurs ) {
         this._parentheseHandler = parentheseHandler;
-        
-     
-
         this._operateurs = operateurs; 
 
         for( int i = 0 ; i < this._operateurs.size(); i ++)

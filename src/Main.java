@@ -9,8 +9,7 @@ import Parsing.ChaineResponsabilite.Operateur;
 import Parsing.ChaineResponsabilite.OperateurHandler;
 import Parsing.ChaineResponsabilite.ParentheseService;
 import REPL.REPL;
-// - Préparer les systèmes dans le main
-// - Système détection à simplifier
+
 public class Main {
     public static void main(String[] args) {
 
