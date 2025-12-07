@@ -1,4 +1,4 @@
-package REPL.Registre.Factory;
+package REPL.Registre.Registreur;
 
 import java.util.Set;
 import java.util.function.Supplier;
