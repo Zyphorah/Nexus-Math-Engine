@@ -12,7 +12,7 @@ import REPL.REPL;
 import REPL.DetecteurSaisie;
 import REPL.Historique.Historique;
 import REPL.Registre.RegistreCommande;
-import REPL.Registre.Factory.RegistreurCommande;
+import REPL.Registre.Registreur.RegistreurCommande;
 import REPL.Commande.*;
 import REPL.Service.AnalyseurExpression;
 import REPL.Service.EvaluateurExpression;

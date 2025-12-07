@@ -6,7 +6,6 @@ import java.util.function.Supplier;
 
 import REPL.Commande.interfaces.ICommande;
 import REPL.Registre.Interfaces.IRegistreCommande;
-import REPL.Registre.Factory.IRegistreurCommande;
 
 public class RegistreCommande implements IRegistreCommande {
     private final Map<String, ICommande> _commandes;
