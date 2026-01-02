@@ -1,43 +1,43 @@
 # Nexus Math Engine (NME)
 
-## 1. Présentation
+## 1. Overview
 
-Nexus Math Engine est un interpréteur d'expressions mathématiques en ligne de commande (CLI) développé en Java. Il permet la transformation de chaînes de caractères en arbres syntaxiques récursifs pour une évaluation immédiate.
+Nexus Math Engine is a command-line (CLI) mathematical expression interpreter developed in Java. It transforms character strings into recursive syntax trees for immediate evaluation.
 
-## 2. Architecture Technique
+## 2. Technical Architecture
 
-Le projet suit les principes SOLID et utilise plusieurs patrons de conception pour assurer le découplage des composants :
+The project follows SOLID principles and uses several design patterns to ensure component decoupling:
 
-* **Composite & Interpréteur** : Modélisation de l'équation sous forme d'arbre via les interfaces `INoeud` et `IExpression`.
-* **Chaîne de Responsabilité** : Gestion de la priorité des opérateurs arithmétiques (+, -, *, /) via `ChaineOperateurs` et `OperateurHandler`.
-* **Command Pattern** : Encapsulation des actions utilisateur dans des classes implémentant `ICommande`.
-* **Injection de Dépendances** : Assemblage des composants dans la classe `Main` pour un découplage maximal.
+* **Composite & Interpreter**: Models equations as trees via the `INoeud` and `IExpression` interfaces.
+* **Chain of Responsibility**: Manages operator precedence (+, -, *, /) via `ChaineOperateurs` and `OperateurHandler`.
+* **Command Pattern**: Encapsulates user actions in classes implementing `ICommande`.
+* **Dependency Injection**: Assembles components in the `Main` class for maximum decoupling.
 
-## 3. Fonctionnalités
+## 3. Features
 
-* **Évaluation d'expressions** : Support des opérateurs arithmétiques usuels et des parenthèses.
-* **Gestion des variables** : Affectation de valeurs à des variables utilisables dans des calculs ultérieurs.
-* **Paquets de constantes** : Chargement de constantes immuables depuis des fichiers texte externes (ex: `pi`, `g`).
-* **Historique permanent** : Conservation des 20 dernières expressions dans `historique.txt`, persistant après fermeture.
-* **Analyse syntaxique** : Commande `analyse` pour le décompte des opérateurs, nombres, variables et constantes utilisés.
+* **Expression evaluation**: Supports standard arithmetic operators and parentheses.
+* **Variable management**: Assign values to variables for use in subsequent calculations.
+* **Constant packages**: Load immutable constants from external text files (e.g., `pi`, `g`).
+* **Persistent history**: Stores the last 20 expressions in `historique.txt`, persisting after closing.
+* **Syntax analysis**: `analyse` command counts operators, numbers, variables, and constants used.
 
-## 4. Spécifications du Système de Stockage
+## 4. Storage System Specifications
 
-* **Variables** : Nom de variable d'au moins un caractère, ne débutant pas par un chiffre et sans espace.
-* **Constantes** : Visuellement distinctes des variables (préfixe `[const]`) et non modifiables après chargement.
+* **Variables**: Variable names must be at least one character, not start with a digit, and contain no spaces.
+* **Constants**: Visually distinct from variables (prefix `[const]`) and immutable after loading.
 
-## 5. Installation et Utilisation
+## 5. Installation and Usage
 
-1. **Compilation** : `javac -d bin src/**/*.java`
-2. **Exécution** : `java -cp bin Main`
-3. **Commandes clés** :
-* `calculer <expr>` : Calcul direct.
-* `var <nom>=<val>` : Assignation.
-* `analyse <expr>` : Statistiques de l'expression.
-* `histoire` : Affichage de l'historique.
-* `quitter` : Fermeture du programme.
+1. **Compile**: `javac -d bin src/**/*.java`
+2. **Run**: `java -cp bin Main`
+3. **Key commands**:
+* `calculer <expr>`: Direct calculation.
+* `var <name>=<val>`: Assignment.
+* `analyse <expr>`: Expression statistics.
+* `histoire`: Show history.
+* `quitter`: Exit the program.
 
-## 6. Limitations connues
+## 6. Known Limitations
 
-* **Rotation de l'historique** : Suppression automatique de la plus vieille expression une fois la limite de 20 atteinte.
-* **Priorité des constantes** : En cas de conflit de nom dans les fichiers chargés, la dernière valeur lue est conservée.
+* **History rotation**: The oldest expression is automatically deleted once the 20-expression limit is reached.
+* **Constant precedence**: If there is a name conflict in loaded files, the last value read is kept.
